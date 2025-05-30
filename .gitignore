@@ -28,3 +28,9 @@ dist/
 npm-debug.log
 .angular/cache/
 .env
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
