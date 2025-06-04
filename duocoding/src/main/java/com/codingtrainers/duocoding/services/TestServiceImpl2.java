@@ -1,4 +1,5 @@
-package com.codingtrainers.DuoCoding.services;
+package com.codingtrainers.duocoding.services;
+
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;

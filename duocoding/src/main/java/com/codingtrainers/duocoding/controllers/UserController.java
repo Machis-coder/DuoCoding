@@ -1,7 +1,7 @@
-package com.codingtrainers.DuoCoding.controllers;
+package com.codingtrainers.duocoding.controllers;
 
-import com.codingtrainers.DuoCoding.entities.User;
-import com.codingtrainers.DuoCoding.services.UserService;
+import com.codingtrainers.duocoding.entities.User;
+import com.codingtrainers.duocoding.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
