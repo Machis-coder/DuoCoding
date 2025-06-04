@@ -1,4 +1,4 @@
-package com.codingtrainers.DuoCoding.entities;
+package com.codingtrainers.duocoding.entities;
 
 public class User {
 
