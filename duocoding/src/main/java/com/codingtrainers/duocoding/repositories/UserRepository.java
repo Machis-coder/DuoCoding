@@ -1,6 +1,6 @@
-package com.codingtrainers.DuoCoding.repositories;
+package com.codingtrainers.duocoding.repositories;
 
-import com.codingtrainers.DuoCoding.entities.User;
+import com.codingtrainers.duocoding.entities.User;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
