@@ -5,9 +5,9 @@ public class Response {
     private int id;
     private String description;
     private int order;
-    private TestQuestion question;
+    private Question question;
 
-    public Response(int id, String description, int order, TestQuestion question) {
+    public Response(int id, String description, int order, Question question) {
         this.id = id;
         this.description = description;
         this.order = order;
@@ -38,11 +38,8 @@ public class Response {
         this.order = order;
     }
 
-    public TestQuestion getQuestion() {
+    public Question getQuestion() {
         return question;
     }
 
-    public void setQuestion(TestQuestion question) {
-        this.question = question;
-    }
 }

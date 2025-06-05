@@ -4,8 +4,7 @@ public class Subject {
     Long id;
     String name;
     String description;
-    String fechaCreacion;
-    String ejercicios;
+
     public Long getId() {
         return id;
     }
@@ -30,20 +29,9 @@ public class Subject {
         this.description = description;
     }
 
-    public String getFechaCreacion() {
-        return fechaCreacion;
+    public Subject(String name, Long id, String description) {
+        this.name = name;
+        this.id = id;
+        this.description = description;
     }
-
-    public void setFechaCreacion(String fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public String getEjercicios() {
-        return ejercicios;
-    }
-
-    public void setEjercicios(String ejercicios) {
-        this.ejercicios = ejercicios;
-    }
-    
 }

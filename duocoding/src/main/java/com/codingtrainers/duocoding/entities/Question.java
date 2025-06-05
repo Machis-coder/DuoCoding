@@ -2,13 +2,11 @@ package com.codingtrainers.duocoding.entities;
 
 public class Question {
     private int id;
-    private String title;
     private QuestionType type;
     private String description;
     private String answer;
 
-    public Question(String title, QuestionType type, String description, String answer) {
-        this.title = title;
+    public Question(QuestionType type, String description, String answer) {
         this.type = type;
         this.description = description;
         this.answer = answer;
@@ -20,14 +18,6 @@ public class Question {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public QuestionType getType() {
