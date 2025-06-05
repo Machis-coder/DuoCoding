@@ -16,10 +16,7 @@ public class UserRepository {
     @PostConstruct
     private void init() {
         users = new ArrayList<User>();
-        for (int i = 0; i < 10; i++) {
-            User user = new User(i,"max"+i,i+"@hotmail.com","1234falsa"+i );
-            users.add(user);
-        }
+
     }
 
     public List<User> findAll() {
