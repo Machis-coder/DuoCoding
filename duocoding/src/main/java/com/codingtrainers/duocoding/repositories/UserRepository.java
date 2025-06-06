@@ -4,6 +4,7 @@ import com.codingtrainers.duocoding.entities.User;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -14,13 +15,22 @@ public class UserRepository {
         System.out.println(this.getClass().getName());
     }
     @PostConstruct
-    private void init() {
-        users = new ArrayList<User>();
-        User user;
+    public void init() {
+        users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            user=()
+            User user = new User(
+                    i,
+                    "User" + i,
+                    "user" + i + "@example.com",
+                    "password" + i,
+                    "Surname" + i,
+                    LocalDateTime.now().minusYears(20).plusDays(i),
+                    "DNI" + i,
+                    true,
+                    (i % 2 == 0) ? "admin" : "user"
+            );
+            users.add(user);
         }
-
     }
 
     public List<User> findAll() {
