@@ -20,8 +20,8 @@ public class UserController {
     public List<User> getAll(){
         return userService.getAll();
     }
+
     public UserController() {
         System.out.println(this.getClass().getName());
-
     }
 }

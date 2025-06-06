@@ -26,8 +26,7 @@ public class SubjectRepository {
     }
 
     public Subject findById(int id) {
-        for (int i = 0; i < subjects.size(); i++) {
-            Subject subject = subjects.get(i);
+        for (Subject subject : subjects) {
             if (subject.getId() == id) {
                 return subject;
             }
