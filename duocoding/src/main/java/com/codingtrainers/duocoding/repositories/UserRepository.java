@@ -1,9 +1,7 @@
 package com.codingtrainers.duocoding.repositories;
-
 import com.codingtrainers.duocoding.entities.User;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
