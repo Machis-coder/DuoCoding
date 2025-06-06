@@ -3,9 +3,7 @@ package com.codingtrainers.duocoding.controllers;
 import com.codingtrainers.duocoding.entities.User;
 import com.codingtrainers.duocoding.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +19,24 @@ public class UserController {
         return userService.getAll();
     }
 
-    public UserController() {
-        System.out.println(this.getClass().getName());
+    @GetMapping("/{id}")
+    public User findById(@RequestParam("id") Long id){
+        return userService.getById(id);
     }
+
+    @PostMapping("/")
+    public void create(@RequestBody User user){
+        userService.create(user);
+    }
+
+    @PutMapping
+    public void update(@RequestBody User user){
+        userService.update(user);
+    }
+
+
+
+
+
+
 }

@@ -1,12 +1,24 @@
 package com.codingtrainers.duocoding.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class User {
 
-    private int id;
+    public User() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String email;
+    private String username;
     private String password;
     private String surname;
     private LocalDateTime birthday;
@@ -14,11 +26,11 @@ public class User {
     private String role;
     private boolean active;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -28,6 +40,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -86,16 +106,17 @@ public class User {
         this.active = active;
     }
 
-    public User(int id, String name, String email, String password, String surname, LocalDateTime birthday, String dni, boolean active, String role) {
+    public User(Long id, String name, String email, String username, String password, String surname, LocalDateTime birthday, String dni, String role, boolean active) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.username = username;
         this.password = password;
         this.surname = surname;
         this.birthday = birthday;
         this.dni = dni;
-        this.active = active;
         this.role = role;
+        this.active = active;
     }
 }
 
