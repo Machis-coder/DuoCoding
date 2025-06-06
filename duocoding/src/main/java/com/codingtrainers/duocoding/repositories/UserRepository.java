@@ -16,6 +16,10 @@ public class UserRepository {
     @PostConstruct
     private void init() {
         users = new ArrayList<User>();
+        User user;
+        for (int i = 0; i < 10; i++) {
+            user=()
+        }
 
     }
 
