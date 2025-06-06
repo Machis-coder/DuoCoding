@@ -1,0 +1,12 @@
+CREATE TABLE user (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR (100) NOT NULL,
+    password VARCHAR (100) NOT NULL,
+    surname VARCHAR (100) NOT NULL,
+    birthday DATE NOT NULL,
+    dni VARCHAR (100),
+    role VARCHAR(100) NOT NULL DEFAULT 'PUPIL',
+    active BIT NOT NULL DEFAULT 1
+)
