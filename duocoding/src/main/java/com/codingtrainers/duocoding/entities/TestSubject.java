@@ -2,15 +2,15 @@ package com.codingtrainers.duocoding.entities;
 
 public class TestSubject {
 
-    private int id;
+    private Long id;
     private Test test;
     private Subject subject;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -30,7 +30,7 @@ public class TestSubject {
         this.subject = subject;
     }
 
-    public TestSubject(int id, Test test, Subject subject) {
+    public TestSubject(Long id, Test test, Subject subject) {
         this.id = id;
         this.test = test;
         this.subject = subject;
