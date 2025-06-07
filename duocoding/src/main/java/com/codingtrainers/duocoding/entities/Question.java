@@ -1,23 +1,23 @@
 package com.codingtrainers.duocoding.entities;
 
 public class Question {
-    private int id;
+    private Long id;
     private QuestionType type;
     private String description;
     private String answer;
 
-    public Question(int id,QuestionType type, String description, String answer) {
+    public Question(Long id,QuestionType type, String description, String answer) {
         this.id = id;
         this.type = type;
         this.description = description;
         this.answer = answer;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
