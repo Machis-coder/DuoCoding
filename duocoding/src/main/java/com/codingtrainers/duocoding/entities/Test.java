@@ -1,23 +1,23 @@
 package com.codingtrainers.duocoding.entities;
 
 public class Test {
-    private int id;
+    private Long id;
     private String name;
     private String description;
     private Subject subject;
 
-    public Test(int id, String name, String description, Subject subject) {
+    public Test(Long id, String name, String description, Subject subject) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.subject = subject;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

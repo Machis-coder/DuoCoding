@@ -1,21 +1,21 @@
 package com.codingtrainers.duocoding.entities;
 
 public class TestQuestion {
-    private int id;
+    private Long id;
     private Test test;
     private Question question;
 
-    public TestQuestion(Test test, Question question, int id) {
+    public TestQuestion(Test test, Question question, Long id) {
         this.test = test;
         this.question = question;
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
