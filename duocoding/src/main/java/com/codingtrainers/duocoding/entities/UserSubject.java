@@ -2,21 +2,21 @@ package com.codingtrainers.duocoding.entities;
 
 public class UserSubject {
 
-    private int id;
+    private Long id;
     private User user;
     private Subject subject;
 
-    public UserSubject(int id, User user, Subject subject) {
+    public UserSubject(Long id, User user, Subject subject) {
         this.id = id;
         this.user = user;
         this.subject = subject;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

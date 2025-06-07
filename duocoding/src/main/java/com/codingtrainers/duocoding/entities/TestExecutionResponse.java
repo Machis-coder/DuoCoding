@@ -2,14 +2,14 @@ package com.codingtrainers.duocoding.entities;
 
 public class TestExecutionResponse {
 
-    private int id;
+    private Long id;
     private TestExecution execution;
     private Question question;
     private String answer;
     private boolean correct;
     private String notes;
 
-    public TestExecutionResponse(int id, TestExecution execution, Question question, String answer, boolean correct, String notes) {
+    public TestExecutionResponse(Long id, TestExecution execution, Question question, String answer, boolean correct, String notes) {
         this.id = id;
         this.execution = execution;
         this.question = question;
@@ -18,11 +18,11 @@ public class TestExecutionResponse {
         this.notes = notes;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

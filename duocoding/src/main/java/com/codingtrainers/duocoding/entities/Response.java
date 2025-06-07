@@ -2,23 +2,23 @@ package com.codingtrainers.duocoding.entities;
 
 public class Response {
 
-    private int id;
+    private Long id;
     private String description;
     private int order;
     private Question question;
 
-    public Response(int id, String description, int order, Question question) {
+    public Response(Long id, String description, int order, Question question) {
         this.id = id;
         this.description = description;
         this.order = order;
         this.question = question;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

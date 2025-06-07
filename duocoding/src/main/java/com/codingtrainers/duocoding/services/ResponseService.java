@@ -13,6 +13,30 @@ public class ResponseService {
     @Autowired
     private ResponseRepository responseRepository;
 
-    public List<Response> getAllResponses() {return responseRepository.getResponses();
+    public List<Response> getAllResponses() {
+        return responseRepository.findAll();
+    }
+
+    public Response getResponseById(Long id) {
+        return responseRepository.findById(id).orElseThrow(() -> new RuntimeException("Response not found"));
+    }
+
+    public Response createResponse(Response response) {
+        return responseRepository.save(response);
+    }
+
+    public Response updateResponse(Response response) {
+        if (!responseRepository.existsById(response.getId())) {
+            throw new RuntimeException("Response not found");
+        }
+        return responseRepository.save(response);
+    }
+
+    public String deleteResponseById(Long id) {
+        if (!responseRepository.existsById(id)) {
+            throw new RuntimeException("Response not found");
+        }
+        responseRepository.deleteById(id);
+        return "Response deleted successfully";
     }
 }
