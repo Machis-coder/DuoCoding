@@ -33,6 +33,6 @@ public class QuestionService {
             throw new RuntimeException("Question not found");
         }
         questionRepository.deleteById(id);
-        return "Pregunta eliminada con éxito";
+        return "Question removed successfully";
     }
 }
