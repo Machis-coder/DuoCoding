@@ -13,6 +13,26 @@ public class QuestionService {
     private QuestionRepository questionRepository;
 
     public List<Question> getAllQuestions() {
-        return questionRepository.getQuestions();
+        return questionRepository.findAll();
+    }
+
+    public Question getQuestionById(Long id) {
+        return questionRepository.findById(id).orElseThrow(() -> new RuntimeException("Question Not Found"));
+    }
+
+    public Question createQuestion(Question question) {
+        return questionRepository.save(question);
+    }
+
+    public Question updateQuestion(Question question) {
+        return questionRepository.save(question);
+    }
+
+    public String deleteQuestionById(Long id){
+        if (!questionRepository.existsById(id)) {
+            throw new RuntimeException("Question not found");
+        }
+        questionRepository.deleteById(id);
+        return "Pregunta eliminada con éxito";
     }
 }
