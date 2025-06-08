@@ -17,11 +17,27 @@ public class TestService {
     @Autowired
     private TestRepository testRepository;
 
-    public List<Test> getAll() {
+    public List<Test> getAllTests() {
         return testRepository.findAll();
     }
 
-    public Test getById(int id) {
-        return testRepository.findById(id);
+    public Test getTestById(Long id) {
+        return testRepository.findById(id).orElseThrow(() -> new RuntimeException("Test not found"));
+    }
+
+    public Test createTest(Test test) {
+        return testRepository.save(test);
+    }
+
+    public Test updateTest(Test test) {
+        return testRepository.save(test);
+    }
+
+    public String deleteTestById(Long id) {
+        if (!testRepository.existsById(id)) {
+            throw new RuntimeException("Test not found");
+        }
+        testRepository.deleteById(id);
+        return "Test eliminado con éxito";
     }
 }
