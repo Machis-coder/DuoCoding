@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/testQuestions")
 public class TestQuestionController {
     @Autowired
-    TestQuestionService testQuestionService;
+    private TestQuestionService testQuestionService;
 
     @GetMapping
     public List<TestQuestion> getAllTestQuestions(){return testQuestionService.getALlTestQuestions();}
