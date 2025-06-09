@@ -1,16 +1,33 @@
 package com.codingtrainers.duocoding.entities;
 
+import jakarta.persistence.*;
+
 import java.sql.Time;
 import java.time.LocalDateTime;
 
+@Entity
 public class TestExecution {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
     private Test test;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
+
     private LocalDateTime date;
+
     private Time timeStart;
+
     private Time timeFinish;
+
     private float result;
+
     private String notes;
 
     public TestExecution() {}

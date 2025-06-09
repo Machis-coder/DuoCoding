@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class SubjectRepository {
-
+//@Service
+//public class SubjectRepository {
+//
 //    private List<Subject> subjects;
 //
 //    @PostConstruct
@@ -33,5 +33,5 @@ public class SubjectRepository {
 //        }
 //        return null;
 //    }
-
-}
+//
+//}
