@@ -1,11 +1,24 @@
 package com.codingtrainers.duocoding.entities;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Response {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String description;
+
+    @Column(name = "response_order")
     private int order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
     private Question question;
+
+    public Response() {}
 
     public Response(Long id, String description, int order, Question question) {
         this.id = id;
@@ -13,7 +26,6 @@ public class Response {
         this.order = order;
         this.question = question;
     }
-
     public Long getId() {
         return id;
     }
