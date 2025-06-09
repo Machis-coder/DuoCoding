@@ -1,12 +1,25 @@
 package com.codingtrainers.duocoding.entities;
 
+
+import jakarta.persistence.*;
+
+@Entity
 public class Question {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
     private QuestionType type;
+
     private String description;
+
     private String answer;
 
-    public Question(Long id,QuestionType type, String description, String answer) {
+    public Question() {}
+
+    public Question(Long id, QuestionType type, String description, String answer) {
         this.id = id;
         this.type = type;
         this.description = description;
