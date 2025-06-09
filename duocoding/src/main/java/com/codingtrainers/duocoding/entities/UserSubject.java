@@ -1,17 +1,30 @@
 package com.codingtrainers.duocoding.entities;
 
+
+import jakarta.persistence.*;
+
+@Entity
 public class UserSubject {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    public UserSubject() {}
 
     public UserSubject(Long id, User user, Subject subject) {
         this.id = id;
         this.user = user;
         this.subject = subject;
     }
-
     public Long getId() {
         return id;
     }

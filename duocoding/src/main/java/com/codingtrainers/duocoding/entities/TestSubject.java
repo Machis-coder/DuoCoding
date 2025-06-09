@@ -1,10 +1,29 @@
 package com.codingtrainers.duocoding.entities;
 
+import jakarta.persistence.*;
+
+@Entity
 public class TestSubject {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
     private Test test;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    public TestSubject() {}
+
+    public TestSubject(Long id, Test test, Subject subject) {
+        this.id = id;
+        this.test = test;
+        this.subject = subject;
+    }
 
     public Long getId() {
         return id;
@@ -30,9 +49,4 @@ public class TestSubject {
         this.subject = subject;
     }
 
-    public TestSubject(Long id, Test test, Subject subject) {
-        this.id = id;
-        this.test = test;
-        this.subject = subject;
-    }
 }

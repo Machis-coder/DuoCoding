@@ -1,14 +1,28 @@
 package com.codingtrainers.duocoding.entities;
 
+import jakarta.persistence.*;
+
+@Entity
 public class TestQuestion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
     private Test test;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
     private Question question;
 
-    public TestQuestion(Test test, Question question, Long id) {
+    public TestQuestion() {}
+
+    public TestQuestion(Long id, Test test, Question question) {
+        this.id = id;
         this.test = test;
         this.question = question;
-        this.id = id;
     }
 
     public Long getId() {
