@@ -11,7 +11,7 @@ public class HashUtils {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
 
-            // Convertir bytes a hexadecimal
+
             StringBuilder hexString = new StringBuilder();
             for (byte b : encodedHash) {
                 String hex = Integer.toHexString(0xff & b);
