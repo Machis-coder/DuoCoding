@@ -10,26 +10,47 @@ public class TestExecutionResponse {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "execution_id")
-    private TestExecution execution;
+    @JoinColumn(name = "test_execution_id")
+    TestExecution testExecution;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    private Question question;
+    Question question;
 
-    private String answer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "response_id")
+    Response response;
 
-    private boolean correct;
+    boolean correct;
 
-    private String notes;
+    String notes;
 
-    public TestExecutionResponse() {}
+    public TestExecutionResponse() {
 
-    public TestExecutionResponse(Long id, TestExecution execution, Question question, String answer, boolean correct, String notes) {
+    }
+
+    public Response getResponse() {
+        return response;
+    }
+
+    public void setResponse(Response response) {
+        this.response = response;
+    }
+
+
+    public TestExecution getTestExecution() {
+        return testExecution;
+    }
+
+    public void setTestExecution(TestExecution testExecution) {
+        this.testExecution = testExecution;
+    }
+
+    public TestExecutionResponse(Long id, TestExecution testExecution, Question question, Response response, boolean correct, String notes) {
         this.id = id;
-        this.execution = execution;
+        this.testExecution = testExecution;
         this.question = question;
-        this.answer = answer;
+        this.response = response;
         this.correct = correct;
         this.notes = notes;
     }
@@ -42,28 +63,12 @@ public class TestExecutionResponse {
         this.id = id;
     }
 
-    public TestExecution getExecution() {
-        return execution;
-    }
-
-    public void setExecution(TestExecution execution) {
-        this.execution = execution;
-    }
-
     public Question getQuestion() {
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
     }
 
     public boolean isCorrect() {
@@ -82,3 +87,5 @@ public class TestExecutionResponse {
         this.notes = notes;
     }
 }
+
+
