@@ -22,7 +22,7 @@ public class SubjectController {
     }
 
     @GetMapping("/{id}")
-    public User findById(@RequestParam("id") Long id) {
+    public Subject findById(@RequestParam("id") Long id) {
         return subjectService.getById(id);
     }
 
