@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class QuestionService {
+
     @Autowired
     private QuestionRepository questionRepository;
 
@@ -17,18 +18,31 @@ public class QuestionService {
     }
 
     public Question getQuestionById(Long id) {
-        return questionRepository.findById(id).orElseThrow(() -> new RuntimeException("Question Not Found"));
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Question Not Found"));
     }
 
     public Question createQuestion(Question question) {
+        if (question == null) {
+            throw new IllegalArgumentException("Question cannot be null");
+        }
         return questionRepository.save(question);
     }
 
     public Question updateQuestion(Question question) {
+        if (question == null) {
+            throw new IllegalArgumentException("Question cannot be null");
+        }
         return questionRepository.save(question);
     }
 
-    public String deleteQuestionById(Long id){
+    public String deleteQuestionById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         if (!questionRepository.existsById(id)) {
             throw new RuntimeException("Question not found");
         }
