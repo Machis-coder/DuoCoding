@@ -58,4 +58,14 @@ public class Test {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
+    
+    public String getSubjectName() {
+        return subject != null ? subject.getName() : null;
+    }
+
+    public void setSubjectName(String subjectName) {
+        if (subject != null) {
+        subject.setName(subjectName);
+    }
+}
 }
