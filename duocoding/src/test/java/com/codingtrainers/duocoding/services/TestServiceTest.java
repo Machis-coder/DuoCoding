@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TestServiceSerciseTest {
+public class TestServiceTest {
 
     @Mock
     private TestRepository testRepository;
