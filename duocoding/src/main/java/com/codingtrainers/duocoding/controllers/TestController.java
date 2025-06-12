@@ -1,6 +1,6 @@
 package com.codingtrainers.duocoding.controllers;
 
-import com.codingtrainers.duocoding.entities.Test;
+import com.codingtrainers.duocoding.entities.Exercise;
 import com.codingtrainers.duocoding.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +16,24 @@ public class TestController {
     private TestService testService;
 
     @GetMapping
-    public List<Test> getAllTests() {
+    public List<Exercise> getAllTests() {
         return testService.getAllTests();
     }
 
     @GetMapping("/{id}")
-    public Test getTestById(@PathVariable Long id) {
+    public Exercise getTestById(@PathVariable Long id) {
         return testService.getTestById(id);
     }
 
     @PostMapping
-    public Test createTest(@RequestBody Test test) {
-        return testService.createTest(test);
+    public Exercise createTest(@RequestBody Exercise exercise) {
+        return testService.createTest(exercise);
     }
 
     @PutMapping("/{id}")
-    public Test updateTest(@PathVariable Long id, @RequestBody Test test) {
-        test.setId(id);
-        return testService.updateTest(test);
+    public Exercise updateTest(@PathVariable Long id, @RequestBody Exercise exercise) {
+        exercise.setId(id);
+        return testService.updateTest(exercise);
     }
 
     @DeleteMapping("/{id}")

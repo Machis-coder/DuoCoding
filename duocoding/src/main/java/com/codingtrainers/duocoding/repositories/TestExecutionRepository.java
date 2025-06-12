@@ -1,6 +1,6 @@
 package com.codingtrainers.duocoding.repositories;
 
-import com.codingtrainers.duocoding.entities.Test;
+import com.codingtrainers.duocoding.entities.Exercise;
 import com.codingtrainers.duocoding.entities.TestExecution;
 import com.codingtrainers.duocoding.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +13,5 @@ public interface TestExecutionRepository extends JpaRepository<TestExecution, Lo
 
     List<TestExecution> findByUser(User user);
 
-    List<TestExecution> findByTest(Test test);
+    List<TestExecution> findByTest(Exercise exercise);
 }

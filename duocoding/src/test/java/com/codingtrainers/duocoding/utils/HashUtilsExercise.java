@@ -3,7 +3,7 @@ package com.codingtrainers.duocoding.utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class HashUtilsTest {
+public class HashUtilsExercise {
     @Test
     public void testSha2() {
         String input = "abcd";

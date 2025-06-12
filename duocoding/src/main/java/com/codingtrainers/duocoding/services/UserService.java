@@ -28,10 +28,12 @@ public class UserService {
     }
 
     public void create(User user) {
-        String password = user.getPassword();
-        password = HashUtils.sha256(password);
+        if (user == null || user.getPassword() == null) {
+            throw new IllegalArgumentException("User and password cannot be null");
+        }
+        String password = HashUtils.sha256(user.getPassword());
         user.setPassword(password);
-         userRepository.save(user);
+        userRepository.save(user);
     }
 
 }

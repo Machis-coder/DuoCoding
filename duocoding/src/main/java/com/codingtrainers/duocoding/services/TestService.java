@@ -1,10 +1,6 @@
-package com.codingtrainers.duocoding.services;//package com.codingtrainers.duocoding.services;
-//
-//public interface TestService {
-//
-//    String sayHello();
-//}
-import com.codingtrainers.duocoding.entities.Test;
+package com.codingtrainers.duocoding.services;
+
+import com.codingtrainers.duocoding.entities.Exercise;
 import com.codingtrainers.duocoding.repositories.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,23 +13,35 @@ public class TestService {
     @Autowired
     private TestRepository testRepository;
 
-    public List<Test> getAllTests() {
+    public List<Exercise> getAllTests() {
         return testRepository.findAll();
     }
 
-    public Test getTestById(Long id) {
+    public Exercise getTestById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         return testRepository.findById(id).orElseThrow(() -> new RuntimeException("Test not found"));
     }
 
-    public Test createTest(Test test) {
-        return testRepository.save(test);
+    public Exercise createTest(Exercise exercise) {
+        if (exercise == null) {
+            throw new IllegalArgumentException("Test cannot be null");
+        }
+        return testRepository.save(exercise);
     }
 
-    public Test updateTest(Test test) {
-        return testRepository.save(test);
+    public Exercise updateTest(Exercise exercise) {
+        if (exercise == null) {
+            throw new IllegalArgumentException("Test cannot be null");
+        }
+        return testRepository.save(exercise);
     }
 
     public String deleteTestById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         if (!testRepository.existsById(id)) {
             throw new RuntimeException("Test not found");
         }

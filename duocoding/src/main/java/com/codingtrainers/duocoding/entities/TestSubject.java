@@ -11,7 +11,7 @@ public class TestSubject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_id")
-    private Test test;
+    private Exercise exercise;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
@@ -19,9 +19,9 @@ public class TestSubject {
 
     public TestSubject() {}
 
-    public TestSubject(Long id, Test test, Subject subject) {
+    public TestSubject(Long id, Exercise exercise, Subject subject) {
         this.id = id;
-        this.test = test;
+        this.exercise = exercise;
         this.subject = subject;
     }
 
@@ -33,12 +33,12 @@ public class TestSubject {
         this.id = id;
     }
 
-    public Test getTest() {
-        return test;
+    public Exercise getTest() {
+        return exercise;
     }
 
-    public void setTest(Test test) {
-        this.test = test;
+    public void setTest(Exercise exercise) {
+        this.exercise = exercise;
     }
 
     public Subject getSubject() {

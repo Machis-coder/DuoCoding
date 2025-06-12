@@ -26,6 +26,12 @@ public class Question {
         this.answer = answer;
     }
 
+    public Question(long l, String s) {
+    }
+
+    public Question(Long o, String newQuestion) {
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,5 +62,12 @@ public class Question {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public void setText(String s) {
+    }
+
+    public String getText() {
+        return description;
     }
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "test")
-public class Test {
+public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,9 @@ public class Test {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    public Test() {}
+    public Exercise() {}
 
-    public Test(Long id, String name, String description, Subject subject) {
+    public Exercise(Long id, String name, String description, Subject subject) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -58,4 +58,14 @@ public class Test {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
+    
+    public String getSubjectName() {
+        return subject != null ? subject.getName() : null;
+    }
+
+    public void setSubjectName(String subjectName) {
+        if (subject != null) {
+        subject.setName(subjectName);
+    }
+}
 }
