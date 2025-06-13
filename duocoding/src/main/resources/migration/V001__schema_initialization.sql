@@ -1,13 +1,13 @@
 CREATE DATABASE IF NOT EXISTS duocoding;
 USE duocoding;
 
-CREATE TABLE Subject (
+CREATE TABLE subject (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description TEXT
 );
 
-CREATE TABLE User (
+CREATE TABLE user (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     surname VARCHAR(255),
@@ -20,73 +20,73 @@ CREATE TABLE User (
     active BOOLEAN
 );
 
-CREATE TABLE Question (
+CREATE TABLE question (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     type VARCHAR(50) NOT NULL,
     description TEXT NOT NULL,
     answer TEXT
 );
 
-CREATE TABLE Response (
+CREATE TABLE response (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     description TEXT NOT NULL,
     `order` INT NOT NULL,
     question_id BIGINT,
-    FOREIGN KEY (question_id) REFERENCES Question(id) ON DELETE CASCADE
+    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
-CREATE TABLE Test (
+CREATE TABLE test (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     subject_id BIGINT,
-    FOREIGN KEY (subject_id) REFERENCES Subject(id) ON DELETE SET NULL
+    FOREIGN KEY (subject_id) REFERENCES subject(id) ON DELETE SET NULL
 );
 
-CREATE TABLE TestExecution (
+CREATE TABLE test_execution (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     test_id BIGINT,
     user_id BIGINT,
     date DATETIME,
-    timeStart TIME,
-    timeFinish TIME,
+    time_start TIME,
+    time_finish TIME,
     result FLOAT,
     notes TEXT,
-    FOREIGN KEY (test_id) REFERENCES Test(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE TABLE TestExecutionResponse (
+CREATE TABLE test_execution_response (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     execution_id BIGINT,
     question_id BIGINT,
     answer TEXT,
     correct BOOLEAN,
     notes TEXT,
-    FOREIGN KEY (execution_id) REFERENCES TestExecution(id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES Question(id) ON DELETE CASCADE
+    FOREIGN KEY (execution_id) REFERENCES test_execution(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
-CREATE TABLE TestQuestion (
+CREATE TABLE test_question (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     test_id BIGINT,
     question_id BIGINT,
-    FOREIGN KEY (test_id) REFERENCES Test(id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES Question(id) ON DELETE CASCADE
+    FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
-CREATE TABLE TestSubject (
+CREATE TABLE test_subject (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     test_id BIGINT,
     subject_id BIGINT,
-    FOREIGN KEY (test_id) REFERENCES Test(id) ON DELETE CASCADE,
-    FOREIGN KEY (subject_id) REFERENCES Subject(id) ON DELETE CASCADE
+    FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subject(id) ON DELETE CASCADE
 );
 
-CREATE TABLE UserSubject (
+CREATE TABLE user_subject (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT,
     subject_id BIGINT,
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
-    FOREIGN KEY (subject_id) REFERENCES Subject(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subject(id) ON DELETE CASCADE
 );
