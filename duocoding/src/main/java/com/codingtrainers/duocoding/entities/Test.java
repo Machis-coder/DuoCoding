@@ -2,6 +2,8 @@ package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "test")
 public class Test {
@@ -17,6 +19,7 @@ public class Test {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private Subject subject;
+
 
     public Test() {}
 

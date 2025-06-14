@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/subject")
 public class SubjectController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class SubjectController {
         subjectService.createSubject(subject);
     }
 
-    @PutMapping
+    @PutMapping("/")
     public void update(@RequestBody Subject subject) {
         subjectService.updateSubject(subject);
     }

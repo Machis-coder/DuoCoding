@@ -1,11 +1,14 @@
 package com.codingtrainers.duocoding.controllers;
 
 
+import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.entities.Test;
 import com.codingtrainers.duocoding.entities.TestExecution;
 import com.codingtrainers.duocoding.entities.User;
 import com.codingtrainers.duocoding.services.TestExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,9 +46,10 @@ public class TestExecutionController {
         return testExecutionService.getTestExecutionById(id);
     }
 
-    @PostMapping("/save")
-    public TestExecution saveTestExecution(@RequestParam Long userId, @RequestParam Long testId) {
-        return testExecutionService.saveTestExecution(userId, testId);
+    @PostMapping("/")
+    public ResponseEntity<Void> saveTestExecution(@RequestBody TestExecutionRequestDTO testExecutionRequestDTO) {
+        testExecutionService.saveTestExecution(testExecutionRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 

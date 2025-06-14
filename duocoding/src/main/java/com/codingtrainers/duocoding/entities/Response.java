@@ -12,7 +12,7 @@ public class Response {
     private String description;
 
     @Column(name = "response_order")
-    private int order;
+    private Integer responseOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
@@ -23,7 +23,7 @@ public class Response {
     public Response(Long id, String description, int order, Question question) {
         this.id = id;
         this.description = description;
-        this.order = order;
+        this.responseOrder = order;
         this.question = question;
     }
     public Long getId() {
@@ -42,12 +42,12 @@ public class Response {
         this.description = description;
     }
 
-    public int getOrder() {
-        return order;
+    public Integer getOrder() {
+        return responseOrder;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setOrder(Integer order) {
+        this.responseOrder = order;
     }
 
     public Question getQuestion() {
