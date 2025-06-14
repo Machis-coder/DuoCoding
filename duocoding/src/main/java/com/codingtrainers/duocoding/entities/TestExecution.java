@@ -2,7 +2,8 @@ package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
 
-import java.sql.Time;
+import java.sql.Date;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,11 +21,11 @@ public class TestExecution {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime date;
+    private Date date;
 
-    private Time timeStart;
+    private LocalDateTime timeStart;
 
-    private Time timeFinish;
+    private LocalDateTime timeFinish;
 
     private float result;
 
@@ -56,28 +57,28 @@ public class TestExecution {
         this.user = user;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public Time getTimeStart() {
+    public LocalDateTime getTimeStart() {
         return timeStart;
     }
 
-    public void setTimeStart(Time timeStart) {
+    public void setTimeStart(LocalDateTime timeStart) {
         this.timeStart = timeStart;
     }
 
-    public Time getTimeFinish() {
-        return timeFinish;
+    public void setTimeFinish(LocalDateTime timeFinish) {
+        this.timeFinish = timeFinish;
     }
 
-    public void setTimeFinish(Time timeFinish) {
-        this.timeFinish = timeFinish;
+    public LocalDateTime getTimeFinish() {
+        return timeFinish;
     }
 
     public float getResult() {

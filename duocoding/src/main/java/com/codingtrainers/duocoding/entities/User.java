@@ -1,9 +1,6 @@
 package com.codingtrainers.duocoding.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -23,8 +20,22 @@ public class User {
     private String surname;
     private LocalDateTime birthday;
     private String dni;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private boolean active;
+
+    public User(Long id, String name, String email, String username, String password, String surname, LocalDateTime birthday, String dni, Role role, boolean active) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.surname = surname;
+        this.birthday = birthday;
+        this.dni = dni;
+        this.role = role;
+        this.active = active;
+    }
 
     public Long getId() {
         return id;
@@ -42,20 +53,20 @@ public class User {
         this.name = name;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -90,11 +101,11 @@ public class User {
         this.dni = dni;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -103,19 +114,6 @@ public class User {
     }
 
     public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public User(Long id, String name, String email, String username, String password, String surname, LocalDateTime birthday, String dni, String role, boolean active) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.surname = surname;
-        this.birthday = birthday;
-        this.dni = dni;
-        this.role = role;
         this.active = active;
     }
 }

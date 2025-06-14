@@ -14,22 +14,18 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public List<User> getAll(){
         return userService.getAll();
     }
 
-    @GetMapping("/id/{id}")
-    public User findById(@RequestParam("id") Long id){
+    @GetMapping("/{id}")
+    public User findById(@PathVariable("id") Long id){
         return userService.getById(id);
     }
 
-    @PostMapping("/create")
-    public void create(@RequestBody User user){
-        userService.create(user);
-    }
 
-    @PutMapping("/update")
+    @PutMapping("/")
     public void update(@RequestBody User user){
         userService.update(user);
     }
