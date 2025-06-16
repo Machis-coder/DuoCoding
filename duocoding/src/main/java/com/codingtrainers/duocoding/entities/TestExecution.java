@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table (name = "test_execution")
 public class TestExecution {
 
     @Id

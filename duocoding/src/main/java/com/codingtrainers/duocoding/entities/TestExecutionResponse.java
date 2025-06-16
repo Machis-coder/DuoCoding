@@ -3,6 +3,7 @@ package com.codingtrainers.duocoding.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "test_execution_response")
 public class TestExecutionResponse {
 
     @Id
