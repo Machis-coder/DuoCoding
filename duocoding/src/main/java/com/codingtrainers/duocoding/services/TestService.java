@@ -1,21 +1,36 @@
-package com.codingtrainers.duocoding.services;//package com.codingtrainers.duocoding.services;
-//
-//public interface TestService {
-//
-//    String sayHello();
-//}
+package com.codingtrainers.duocoding.services;
+
+import com.codingtrainers.duocoding.dtos.ExamStructureDTO;
+import com.codingtrainers.duocoding.entities.Response;
 import com.codingtrainers.duocoding.entities.Test;
+import com.codingtrainers.duocoding.entities.TestQuestion;
+import com.codingtrainers.duocoding.repositories.ResponseRepository;
+import com.codingtrainers.duocoding.repositories.TestQuestionRepository;
 import com.codingtrainers.duocoding.repositories.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TestService {
 
     @Autowired
     private TestRepository testRepository;
+
+    private final TestQuestionRepository testQuestionRepository;
+    private final ResponseRepository responseRepository;
+
+    public TestService(TestRepository testRepository,
+                       TestQuestionRepository testQuestionRepository,
+                       ResponseRepository responseRepository) {
+        this.testRepository = testRepository;
+        this.testQuestionRepository = testQuestionRepository;
+        this.responseRepository = responseRepository;
+    }
 
     public List<Test> getAllTests() {
         return testRepository.findAll();
@@ -40,4 +55,52 @@ public class TestService {
         testRepository.deleteById(id);
         return "Test eliminado con éxito";
     }
+
+    public ExamStructureDTO getExamStructure(Long testId) {
+    Optional<Test> optionalTest = testRepository.findById(testId);
+    if (optionalTest.isEmpty()) {
+        return null;
+    }
+
+    Test test = optionalTest.get();
+    ExamStructureDTO dto = new ExamStructureDTO();
+    dto.setTestId(test.getId());
+    dto.setTestTitle(test.getName());
+
+    List<TestQuestion> testQuestions = testQuestionRepository.findByTestId(testId);
+
+    dto.setQuestions(testQuestions.stream().map(tq -> {
+        com.codingtrainers.duocoding.entities.Question question = tq.getQuestion();
+        ExamStructureDTO.QuestionDTO questionDTO = new ExamStructureDTO.QuestionDTO();
+        questionDTO.questionId = question.getId();
+        questionDTO.content = question.getDescription();
+
+        Set<Long> correctAnswerIds = new HashSet<>();
+        try {
+            if (question.getAnswer() != null && !question.getAnswer().isEmpty()) {
+                String[] parts = question.getAnswer().split(",");
+                for (String part : parts) {
+                    correctAnswerIds.add(Long.parseLong(part.trim()));
+                }
+            }
+        } catch (NumberFormatException e) {
+            
+        }
+
+        List<Response> responses = responseRepository.findByQuestionId(question.getId());
+        questionDTO.responses = responses.stream().map(r -> {
+            ExamStructureDTO.ResponseDTO responseDTO = new ExamStructureDTO.ResponseDTO();
+            responseDTO.responseId = r.getId();
+            responseDTO.content = r.getDescription();
+            responseDTO.setCorrect(correctAnswerIds.contains(r.getId()));
+                        return responseDTO;
+        }).toList();
+
+        return questionDTO;
+    }).toList());
+
+    return dto;
+}
+
+    
 }
