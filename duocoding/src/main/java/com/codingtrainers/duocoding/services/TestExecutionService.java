@@ -57,7 +57,7 @@ public class TestExecutionService {
         return testExecutionRepository.findById(id);
     }
 
-    public TestExecution saveTestExecution(TestExecutionRequestDTO dto)
+    public void saveTestExecution(TestExecutionRequestDTO dto)
     {
         User user = new User();
         user.setId(dto.getUserId());
@@ -75,9 +75,7 @@ public class TestExecutionService {
         for(int i=0; i< dto.getResponses().size();i++){
             TestExecutionResponseRequestDTO responseDTO = dto.getResponses().get(i);
             TestExecutionResponse testExecutionResponse = new TestExecutionResponse();
-
             Optional<Question> questionOpt = questionRepository.findById(responseDTO.getQuestionId());
-
             if (questionOpt.isPresent()) {
                 Question question = questionOpt.get();
                 testExecutionResponse.setQuestion(question);
@@ -90,11 +88,11 @@ public class TestExecutionService {
                     testExecutionResponse.setCorrect(false);
                 }
             } else {
-                throw new RuntimeException("Question not found with ID: " + responseDTO.getQuestionId());
+                throw new RuntimeException("Question not found");
             }
-            testExecutionResponseRepository.save(testExecutionResponse);
+            testExecutionResponseRepository.save(testExecutionResponse); //
     }
-        return testExecutionRepository.save(testExecution);
+        testExecutionRepository.save(testExecution);
     }
 
 }
