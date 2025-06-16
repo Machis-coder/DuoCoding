@@ -68,9 +68,10 @@ public class TestExecutionService {
         testExecution.setTest(test);
         testExecution.setDate(dto.getDate());
         testExecution.setNotes(null);
-        testExecution.setTimeFinish(dto.getTimeFinish());
-        testExecution.setTimeStart(dto.getTimeStart());
+        testExecution.setFinishTime(dto.getTimeFinish());
+        testExecution.setStartTime(dto.getTimeStart());
         testExecution.setResult(0);
+        testExecution.setActive(true);
         List<TestExecutionResponse> responses = new ArrayList<>();
         for(int i=0; i< dto.getResponses().size();i++){
             TestExecutionResponseRequestDTO responseDTO = dto.getResponses().get(i);
