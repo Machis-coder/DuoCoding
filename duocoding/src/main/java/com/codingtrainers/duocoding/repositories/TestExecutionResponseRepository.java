@@ -15,7 +15,6 @@ public interface TestExecutionResponseRepository extends CrudRepository<TestExec
 
     List<TestExecutionResponse> findByTestExecution(TestExecution testExecution);
 
-    List<TestExecutionResponse> findByResponse (Response response);
 
     Optional<TestExecutionResponse> findByTestExecutionAndQuestion(TestExecution testExecution, Question question);
 
