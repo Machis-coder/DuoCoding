@@ -8,23 +8,28 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column (name = "name")
     private String name;
-
+    @Column (name = "description")
     private String description;
+    @Column (name = "active")
+    private Boolean active;
 
     public Subject() {}
 
-    public Subject(Long id, String name, String description) {
+    public Subject(Long id, String name, Boolean active, String description) {
         this.id = id;
         this.name = name;
+        this.active = active;
         this.description = description;
     }
 
-    public Subject(String name, Long id, String description) {
-        this.name = name;
-        this.id = id;
-        this.description = description;
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Long getId() {

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,15 +22,23 @@ public class TestExecution {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Date date;
+    @Column(name = "date")
+    private LocalDate date;
 
-    private LocalDateTime timeStart;
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
 
-    private LocalDateTime timeFinish;
+    @Column(name = "finish_time")
+    private LocalDateTime finishTime;
 
+    @Column (name = "result")
     private float result;
 
+    @Column (name = "notes")
     private String notes;
+
+    @Column(name = "active")
+    private boolean active;
 
     public TestExecution() {}
 
@@ -57,28 +66,28 @@ public class TestExecution {
         this.user = user;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public LocalDateTime getTimeStart() {
-        return timeStart;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setTimeStart(LocalDateTime timeStart) {
-        this.timeStart = timeStart;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public void setTimeFinish(LocalDateTime timeFinish) {
-        this.timeFinish = timeFinish;
+    public LocalDateTime getFinishTime() {
+        return finishTime;
     }
 
-    public LocalDateTime getTimeFinish() {
-        return timeFinish;
+    public void setFinishTime(LocalDateTime finishTime) {
+        this.finishTime = finishTime;
     }
 
     public float getResult() {
@@ -95,5 +104,13 @@ public class TestExecution {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

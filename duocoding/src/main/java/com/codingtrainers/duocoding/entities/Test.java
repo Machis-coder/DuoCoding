@@ -11,23 +11,33 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "name")
     private String name;
-
+    @Column (name = "description")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private Subject subject;
-
+    @Column (name = "active")
+    private Boolean active;
 
     public Test() {}
 
-    public Test(Long id, String name, String description, Subject subject) {
+    public Test(Long id, String name, String description, Subject subject, Boolean active) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.subject = subject;
+        this.active = active;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Long getId() {

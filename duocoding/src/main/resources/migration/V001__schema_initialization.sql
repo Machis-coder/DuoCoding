@@ -1,7 +1,8 @@
 CREATE TABLE subject (
                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
                          name VARCHAR(255) NOT NULL,
-                         description TEXT
+                         description TEXT,
+                         active boolean
 );
 
 CREATE TABLE user (
@@ -11,7 +12,7 @@ CREATE TABLE user (
                       email VARCHAR(255) UNIQUE NOT NULL,
                       username VARCHAR(255) UNIQUE NOT NULL,
                       password VARCHAR(255) NOT NULL,
-                      birthday DATETIME,
+                      birthday DATE,
                       dni VARCHAR(20),
                       role VARCHAR(50),
                       active BOOLEAN
@@ -21,7 +22,8 @@ CREATE TABLE question (
                           id BIGINT PRIMARY KEY AUTO_INCREMENT,
                           type VARCHAR(50) NOT NULL,
                           description TEXT NOT NULL,
-                          answer TEXT
+                          answer TEXT,
+                          active boolean
 );
 
 CREATE TABLE response (
@@ -29,6 +31,7 @@ CREATE TABLE response (
                           description TEXT NOT NULL,
                           response_order INT NOT NULL,
                           question_id BIGINT,
+                          active booolean,
                           FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
@@ -37,6 +40,7 @@ CREATE TABLE test (
                       name VARCHAR(255) NOT NULL,
                       description TEXT,
                       subject_id BIGINT,
+                      active boolean,
                       FOREIGN KEY (subject_id) REFERENCES subject(id) ON DELETE SET NULL
 );
 
@@ -44,11 +48,12 @@ CREATE TABLE test_execution (
                                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                                 test_id BIGINT,
                                 user_id BIGINT,
-                                date DATETIME,
-                                time_start TIME,
-                                time_finish TIME,
+                                date DATE,
+                                start_time DATETIME,
+                                finish_time DATETIME,
                                 result FLOAT,
                                 notes TEXT,
+                                active boolean
                                 FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE,
                                 FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
@@ -61,6 +66,7 @@ CREATE TABLE test_execution_response (
                                          answer TEXT,
                                          correct BOOLEAN,
                                          notes TEXT,
+                                         boolean active,
                                          FOREIGN KEY (test_execution_id) REFERENCES test_execution(id) ON DELETE CASCADE,
                                          FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE,
                                          FOREIGN KEY (response_id) REFERENCES response(id) ON DELETE SET NULL

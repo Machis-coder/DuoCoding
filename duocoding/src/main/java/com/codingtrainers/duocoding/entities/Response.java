@@ -8,7 +8,7 @@ public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column (name = "description")
     private String description;
 
     @Column(name = "response_order")
@@ -18,6 +18,8 @@ public class Response {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    @Column (name = "active")
+    private Boolean active;
     public Response() {}
 
     public Response(Long id, String description, int order, Question question) {

@@ -11,22 +11,50 @@ public class TestExecutionResponse {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_execution_id")
-    TestExecution testExecution;
+    private TestExecution testExecution;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    Question question;
+    private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "response_id")
-    Response response;
+    private Response response;
+    @Column (name = "correct")
+    private Boolean correct;
+    @Column(name = "notes")
+    private String notes;
 
-    boolean correct;
-
-    String notes;
-
+    @Column (name = "active")
+    private Boolean active;
     public TestExecutionResponse() {
 
+    }
+
+    public TestExecutionResponse(Long id, TestExecution testExecution, Question question, Response response, Boolean correct, String notes, Boolean active) {
+        this.id = id;
+        this.testExecution = testExecution;
+        this.question = question;
+        this.response = response;
+        this.correct = correct;
+        this.notes = notes;
+        this.active = active;
+    }
+
+    public Boolean getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(Boolean correct) {
+        this.correct = correct;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Response getResponse() {
@@ -46,14 +74,7 @@ public class TestExecutionResponse {
         this.testExecution = testExecution;
     }
 
-    public TestExecutionResponse(Long id, TestExecution testExecution, Question question, Response response, boolean correct, String notes) {
-        this.id = id;
-        this.testExecution = testExecution;
-        this.question = question;
-        this.response = response;
-        this.correct = correct;
-        this.notes = notes;
-    }
+
 
     public Long getId() {
         return id;
