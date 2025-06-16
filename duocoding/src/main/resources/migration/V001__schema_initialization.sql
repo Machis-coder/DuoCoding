@@ -53,7 +53,7 @@ CREATE TABLE test_execution (
                                 finish_time DATETIME,
                                 result FLOAT,
                                 notes TEXT,
-                                active boolean DEFAULT TRUE
+                                active boolean DEFAULT TRUE,
                                 FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE,
                                 FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
