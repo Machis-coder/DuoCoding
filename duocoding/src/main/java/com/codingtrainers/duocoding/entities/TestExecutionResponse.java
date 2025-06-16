@@ -18,9 +18,6 @@ public class TestExecutionResponse {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "response_id")
-    private Response response;
     @Column (name = "correct")
     private Boolean correct;
     @Column(name = "notes")
@@ -28,54 +25,22 @@ public class TestExecutionResponse {
 
     @Column (name = "active")
     private Boolean active;
+    @Column(name = "answer")
+    private String answer;
+
     public TestExecutionResponse() {
 
     }
 
-    public TestExecutionResponse(Long id, TestExecution testExecution, Question question, Response response, Boolean correct, String notes, Boolean active) {
+    public TestExecutionResponse(Long id, TestExecution testExecution, Question question, Boolean correct, String notes, Boolean active, String answer) {
         this.id = id;
         this.testExecution = testExecution;
         this.question = question;
-        this.response = response;
         this.correct = correct;
         this.notes = notes;
         this.active = active;
+        this.answer = answer;
     }
-
-    public Boolean getCorrect() {
-        return correct;
-    }
-
-    public void setCorrect(Boolean correct) {
-        this.correct = correct;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Response getResponse() {
-        return response;
-    }
-
-    public void setResponse(Response response) {
-        this.response = response;
-    }
-
-
-    public TestExecution getTestExecution() {
-        return testExecution;
-    }
-
-    public void setTestExecution(TestExecution testExecution) {
-        this.testExecution = testExecution;
-    }
-
-
 
     public Long getId() {
         return id;
@@ -93,14 +58,6 @@ public class TestExecutionResponse {
         this.question = question;
     }
 
-    public boolean isCorrect() {
-        return correct;
-    }
-
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
-    }
-
     public String getNotes() {
         return notes;
     }
@@ -108,6 +65,45 @@ public class TestExecutionResponse {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public Boolean getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(Boolean correct) {
+        this.correct = correct;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+
+
+
+    public TestExecution getTestExecution() {
+        return testExecution;
+    }
+
+    public void setTestExecution(TestExecution testExecution) {
+        this.testExecution = testExecution;
+    }
+
+
+
+
 }
 
 

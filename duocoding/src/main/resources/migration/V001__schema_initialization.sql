@@ -62,14 +62,12 @@ CREATE TABLE test_execution_response (
                                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
                                          test_execution_id BIGINT,
                                          question_id BIGINT,
-                                         response_id BIGINT,
                                          answer TEXT,
                                          correct BOOLEAN,
                                          notes TEXT,
                                          active boolean DEFAULT TRUE,
                                          FOREIGN KEY (test_execution_id) REFERENCES test_execution(id) ON DELETE CASCADE,
-                                         FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE,
-                                         FOREIGN KEY (response_id) REFERENCES response(id) ON DELETE SET NULL
+                                         FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
 CREATE TABLE test_question (
