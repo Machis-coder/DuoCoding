@@ -3,6 +3,7 @@ package com.codingtrainers.duocoding.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "response")
 public class Response {
 
     @Id
@@ -20,6 +21,7 @@ public class Response {
 
     @Column (name = "active")
     private Boolean active;
+
     public Response() {}
 
     public Response(Long id, String description, int order, Question question) {

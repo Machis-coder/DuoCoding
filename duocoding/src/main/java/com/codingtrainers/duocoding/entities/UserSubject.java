@@ -4,6 +4,7 @@ package com.codingtrainers.duocoding.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "user_subject")
 public class UserSubject {
 
     @Id

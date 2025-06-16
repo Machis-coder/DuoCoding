@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
 @Entity
+@Table (name = "user")
 public class User {
 
     public User() {
@@ -16,13 +18,13 @@ public class User {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column (name = "name")
+    @Column (name = "email")
     private String email;
     @Column (name = "username" )
     private String username;
     @Column (name = "password")
     private String password;
-    @Column (name = "surnanme")
+    @Column (name = "surname")
     private String surname;
     @Column (name = "birthday")
     private LocalDate birthday;
