@@ -15,7 +15,7 @@ CREATE TABLE user (
                       birthday DATE,
                       dni VARCHAR(20),
                       role VARCHAR(50),
-                      aactive boolean DEFAULT TRUE
+                      active boolean DEFAULT TRUE
 );
 
 CREATE TABLE question (
