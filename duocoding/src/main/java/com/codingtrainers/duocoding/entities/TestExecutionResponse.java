@@ -3,6 +3,7 @@ package com.codingtrainers.duocoding.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "test_execution_response")
 public class TestExecutionResponse {
 
     @Id
@@ -11,48 +12,34 @@ public class TestExecutionResponse {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_execution_id")
-    TestExecution testExecution;
+    private TestExecution testExecution;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    Question question;
+    private Question question;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "response_id")
-    Response response;
+    @Column (name = "correct")
+    private Boolean correct;
+    @Column(name = "notes")
+    private String notes;
 
-    boolean correct;
-
-    String notes;
+    @Column (name = "active")
+    private Boolean active;
+    @Column(name = "answer")
+    private String answer;
 
     public TestExecutionResponse() {
 
     }
 
-    public Response getResponse() {
-        return response;
-    }
-
-    public void setResponse(Response response) {
-        this.response = response;
-    }
-
-
-    public TestExecution getTestExecution() {
-        return testExecution;
-    }
-
-    public void setTestExecution(TestExecution testExecution) {
-        this.testExecution = testExecution;
-    }
-
-    public TestExecutionResponse(Long id, TestExecution testExecution, Question question, Response response, boolean correct, String notes) {
+    public TestExecutionResponse(Long id, TestExecution testExecution, Question question, Boolean correct, String notes, Boolean active, String answer) {
         this.id = id;
         this.testExecution = testExecution;
         this.question = question;
-        this.response = response;
         this.correct = correct;
         this.notes = notes;
+        this.active = active;
+        this.answer = answer;
     }
 
     public Long getId() {
@@ -71,14 +58,6 @@ public class TestExecutionResponse {
         this.question = question;
     }
 
-    public boolean isCorrect() {
-        return correct;
-    }
-
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
-    }
-
     public String getNotes() {
         return notes;
     }
@@ -86,6 +65,45 @@ public class TestExecutionResponse {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public Boolean getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(Boolean correct) {
+        this.correct = correct;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+
+
+
+    public TestExecution getTestExecution() {
+        return testExecution;
+    }
+
+    public void setTestExecution(TestExecution testExecution) {
+        this.testExecution = testExecution;
+    }
+
+
+
+
 }
 
 

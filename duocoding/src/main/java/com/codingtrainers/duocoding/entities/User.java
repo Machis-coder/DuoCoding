@@ -2,9 +2,12 @@ package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
 @Entity
+@Table (name = "user")
 public class User {
 
     public User() {
@@ -13,18 +16,28 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column (name = "email")
     private String email;
+    @Column (name = "username" )
     private String username;
+    @Column (name = "password")
     private String password;
+    @Column (name = "surname")
     private String surname;
-    private LocalDateTime birthday;
+    @Column (name = "birthday")
+    private LocalDate birthday;
+    @Column (name = "dni")
     private String dni;
-    @Enumerated(EnumType.STRING)
-    private Role role;
-    private boolean active;
 
-    public User(Long id, String name, String email, String username, String password, String surname, LocalDateTime birthday, String dni, Role role, boolean active) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+    @Column (name = "active")
+    private Boolean active;
+
+    public User(Long id, String name, String email, String username, String password, String surname, LocalDate birthday, String dni, Role role, Boolean active) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -85,11 +98,11 @@ public class User {
         this.surname = surname;
     }
 
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -109,11 +122,11 @@ public class User {
         this.role = role;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 }

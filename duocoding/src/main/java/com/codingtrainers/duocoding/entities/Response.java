@@ -3,12 +3,13 @@ package com.codingtrainers.duocoding.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "response")
 public class Response {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column (name = "description")
     private String description;
 
     @Column(name = "response_order")
@@ -17,6 +18,9 @@ public class Response {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
+
+    @Column (name = "active")
+    private Boolean active;
 
     public Response() {}
 
