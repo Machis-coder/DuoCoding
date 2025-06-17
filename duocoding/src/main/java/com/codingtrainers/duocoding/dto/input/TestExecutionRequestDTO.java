@@ -1,6 +1,7 @@
 package com.codingtrainers.duocoding.dto.input;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public class TestExecutionRequestDTO {
 
     private Long testId;
     private Long userId;
-    private Date date;
+    private LocalDate date;
     private LocalDateTime timeStart;
     private LocalDateTime timeFinish;
     private List<TestExecutionResponseRequestDTO> responses;
@@ -31,11 +32,11 @@ public class TestExecutionRequestDTO {
         this.userId = userId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

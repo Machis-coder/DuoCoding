@@ -4,6 +4,7 @@ package com.codingtrainers.duocoding.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "question")
 public class Question {
 
     @Id
@@ -11,19 +12,31 @@ public class Question {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private QuestionType type;
-
+    @Column(name  = "description")
     private String description;
-
+    @Column (name = "answer")
     private String answer;
+    @Column (name = "active")
+    private Boolean active;
 
     public Question() {}
 
-    public Question(Long id, QuestionType type, String description, String answer) {
+    public Question(Long id, QuestionType type, String description, String answer, Boolean active) {
         this.id = id;
         this.type = type;
         this.description = description;
         this.answer = answer;
+        this.active = active;
+    }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Long getId() {

@@ -57,7 +57,7 @@ public class TestExecutionService {
         return testExecutionRepository.findById(id);
     }
 
-    public TestExecution saveTestExecution(TestExecutionRequestDTO dto)
+    public void saveTestExecution(TestExecutionRequestDTO dto)
     {
         User user = new User();
         user.setId(dto.getUserId());
@@ -68,41 +68,31 @@ public class TestExecutionService {
         testExecution.setTest(test);
         testExecution.setDate(dto.getDate());
         testExecution.setNotes(null);
-        testExecution.setTimeFinish(dto.getTimeFinish());
-        testExecution.setTimeStart(dto.getTimeStart());
+        testExecution.setFinishTime(dto.getTimeFinish());
+        testExecution.setStartTime(dto.getTimeStart());
         testExecution.setResult(0);
-        List<TestExecutionResponse> responses = new ArrayList<>();
+        testExecutionRepository.save(testExecution);
         for(int i=0; i< dto.getResponses().size();i++){
             TestExecutionResponseRequestDTO responseDTO = dto.getResponses().get(i);
             TestExecutionResponse testExecutionResponse = new TestExecutionResponse();
-
             Optional<Question> questionOpt = questionRepository.findById(responseDTO.getQuestionId());
-
             if (questionOpt.isPresent()) {
                 Question question = questionOpt.get();
-                String type = String.valueOf(question.getType());
                 testExecutionResponse.setQuestion(question);
-                Optional<Response> responseOpt = responseRepository.findById(responseDTO.getResponseId());
-                if (responseOpt.isPresent()) {
-                    testExecutionResponse.setResponse(responseOpt.get());
-
-                    if(testExecutionResponse.getResponse().getOrder().toString().equalsIgnoreCase(question.getAnswer())) {
-                        testExecutionResponse.setCorrect(true);
-                        testExecution.setResult(testExecution.getResult() + 1);
-
-                    }else{
-                        testExecutionResponse.setCorrect(false);
-                    }
-                        testExecutionResponse.setResponse(responseOpt.get());
-                }  else {
-                    throw new RuntimeException("Response not found with ID: " + responseDTO.getResponseId());
+                testExecutionResponse.setAnswer(responseDTO.getAnswer());
+                testExecutionResponse.setTestExecution(testExecution);
+                if(testExecutionResponse.getAnswer().equals(question.getAnswer())){
+                    testExecutionResponse.setCorrect(true);
+                    testExecution.setResult(testExecution.getResult()+1);
+                }else{
+                    testExecutionResponse.setCorrect(false);
                 }
             } else {
-                throw new RuntimeException("Question not found with ID: " + responseDTO.getQuestionId());
+                throw new RuntimeException("Question not found");
             }
-            testExecutionResponseRepository.save(testExecutionResponse);
+            testExecutionResponseRepository.save(testExecutionResponse); //
     }
-        return testExecutionRepository.save(testExecution);
+        testExecutionRepository.save(testExecution);
     }
 
 }
