@@ -14,4 +14,6 @@ public interface TestExecutionRepository extends JpaRepository<TestExecution, Lo
     List<TestExecution> findByUser(User user);
 
     List<TestExecution> findByTest(Test test);
+
+    List<TestExecution> findByUserId(Long userId);
 }
