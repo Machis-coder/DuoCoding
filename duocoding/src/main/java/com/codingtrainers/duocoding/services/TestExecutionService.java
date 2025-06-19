@@ -2,16 +2,18 @@ package com.codingtrainers.duocoding.services;
 
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionResponseRequestDTO;
+import com.codingtrainers.duocoding.dto.output.QuestionDTO;
+import com.codingtrainers.duocoding.dto.output.ResponseDTO;
+import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
+import com.codingtrainers.duocoding.dto.output.TestExecutionResponseDTO;
 import com.codingtrainers.duocoding.entities.*;
 import com.codingtrainers.duocoding.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TestExecutionService {
@@ -94,5 +96,70 @@ public class TestExecutionService {
     }
         testExecutionRepository.save(testExecution);
     }
+
+    //metodo estructura text  realizado.
+    public TestExecutionDTO gesTestExecutionById(Long testExecutionId) {
+        TestExecution execution = testExecutionRepository.findById(testExecutionId)
+                .orElseThrow(() -> new RuntimeException("TestExecution not found"));
+
+        // Obtener todas las respuestas de la ejecución
+        List<TestExecutionResponse> responseList =
+                testExecutionResponseRepository.findByTestExecutionId(testExecutionId);
+
+        // Mapa para cachear las respuestas por pregunta
+        Map<Long, List<Response>> allResponsesByQuestion = new HashMap<>();
+        List<TestExecutionResponseDTO> executionResponseDTOs = new ArrayList<>();
+
+        for (TestExecutionResponse execResponse : responseList) {
+            Question question = execResponse.getQuestion();
+
+            // Cachear respuestas por pregunta
+            allResponsesByQuestion.computeIfAbsent(question.getId(),
+                    id -> responseRepository.findByQuestionId(id));
+
+            // Armar DTO individual
+            TestExecutionResponseDTO respDTO = new TestExecutionResponseDTO();
+            respDTO.setId(execResponse.getId());
+            respDTO.setQuestionId(question.getId());
+            respDTO.setAnswer(execResponse.getAnswer());
+            respDTO.setCorrect(execResponse.getCorrect());
+            respDTO.setNotes(execResponse.getNotes());
+
+            executionResponseDTOs.add(respDTO);
+        }
+
+        // Mapear preguntas con sus respuestas y respuesta seleccionada
+        List<QuestionDTO> questionDTOList = responseList.stream().map(execResp -> {
+            Question question = execResp.getQuestion();
+            List<ResponseDTO> responseDTOs = allResponsesByQuestion.getOrDefault(question.getId(), new ArrayList<>())
+                    .stream()
+                    .map(resp -> new ResponseDTO(resp.getId(), resp.getDescription(), resp.getOrder()))
+                    .collect(Collectors.toList());
+
+            QuestionDTO questionDTO = new QuestionDTO();
+            questionDTO.setDescription(question.getDescription());
+            questionDTO.setType(question.getType());
+            questionDTO.setAnswer(execResp.getAnswer()); // respuesta seleccionada
+            questionDTO.setResponses(responseDTOs);
+
+            return questionDTO;
+        }).collect(Collectors.toList());
+
+        // Armar DTO final
+        TestExecutionDTO dto = new TestExecutionDTO();
+        dto.setId(execution.getId());
+        dto.setTestId(execution.getTest().getId());
+        dto.setUserId(execution.getUser().getId());
+        dto.setDate(java.sql.Date.valueOf(execution.getDate()));
+        dto.setStartTime(execution.getStartTime());
+        dto.setEndTime(execution.getFinishTime());
+        dto.setResult(execution.getResult());
+        dto.setNotes(execution.getNotes());
+        dto.setExecutionResponsesList(executionResponseDTOs);
+        // Si quieres incluir las preguntas completas en el DTO, puedes agregar questionDTOList a otro campo
+
+        return dto;
+    }
+
 
 }
