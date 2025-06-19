@@ -22,16 +22,16 @@ public class TestExecutionResponseDTO {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getQuestionId() {
         return questionId;
     }
 
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAnswer() {

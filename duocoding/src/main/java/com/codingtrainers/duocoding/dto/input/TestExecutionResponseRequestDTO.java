@@ -1,18 +1,19 @@
 package com.codingtrainers.duocoding.dto.input;
 
-import java.util.List;
+
 
 public class TestExecutionResponseRequestDTO {
 
     private Long questionId;
     private String answer;
 
-
-
-
     public TestExecutionResponseRequestDTO() {
     }
 
+    public TestExecutionResponseRequestDTO(Long questionId, String answer) {
+        this.questionId = questionId;
+        this.answer = answer;
+    }
 
     public Long getQuestionId() {
         return questionId;

@@ -1,6 +1,7 @@
 package com.codingtrainers.duocoding.controllers;
 
 
+import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.entities.Test;
 import com.codingtrainers.duocoding.entities.TestExecution;
@@ -51,6 +52,13 @@ public class TestExecutionController {
         testExecutionService.saveTestExecution(testExecutionRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PostMapping("/notes")
+    public ResponseEntity<Void> saveTestExecutionNotes(@RequestBody NotesFromTeacherRequestDTO notesFromTeacherRequestDTO) {
+        testExecutionService.saveNotesFromTeacher(notesFromTeacherRequestDTO);
+       return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 
 
 }
