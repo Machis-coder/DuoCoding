@@ -18,6 +18,7 @@ public class TestExecutionDTO {
     private float result;
     private String notes;
     private List<TestExecutionResponseDTO> executionResponsesList;
+    private String testName;
 
     public Long getId() {
         return id;
@@ -25,6 +26,14 @@ public class TestExecutionDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
     }
 
     public Long getTestId() {
