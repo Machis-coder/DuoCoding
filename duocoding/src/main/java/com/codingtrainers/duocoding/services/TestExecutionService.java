@@ -32,12 +32,6 @@ public class TestExecutionService {
     }
 
 
-    public List<TestExecution> getTestExecutionByUser(Long userId) {
-        User user = new User();
-        user.setId(userId);
-        return testExecutionRepository.findByUser(user);
-    }
-
     public List<TestExecutionDTO> getTestExecutionsByUserId(Long userId) {
         if (userId == null) {
             throw new NullPointerException("userId is null");
