@@ -19,4 +19,6 @@ public interface TestExecutionResponseRepository extends CrudRepository<TestExec
     Optional<TestExecutionResponse> findByTestExecutionAndQuestion(TestExecution testExecution, Question question);
 
     void deleteByTestExecution(TestExecution testExecution);
+
+    List<TestExecutionResponse> findByTestExecutionId(Long testExecutionId);
 }

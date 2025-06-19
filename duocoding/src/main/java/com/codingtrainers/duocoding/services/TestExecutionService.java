@@ -3,13 +3,17 @@ package com.codingtrainers.duocoding.services;
 import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionResponseRequestDTO;
+import com.codingtrainers.duocoding.dto.output.QuestionDTO;
+import com.codingtrainers.duocoding.dto.output.ResponseDTO;
 import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
+import com.codingtrainers.duocoding.dto.output.TestExecutionResponseDTO;
 import com.codingtrainers.duocoding.entities.*;
 import com.codingtrainers.duocoding.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,6 +30,8 @@ public class TestExecutionService {
     @Autowired
     private QuestionRepository questionRepository;
 
+    @Autowired
+    private ResponseRepository responseRepository;
 
     public List<TestExecution> getTestExecutions() {
         return testExecutionRepository.findAll();
@@ -128,5 +134,65 @@ public class TestExecutionService {
         testExecutionRepository.save(testExecution);
     }
 
+   
+    public TestExecutionDTO gesTestExecutionById(Long testExecutionId) {
+        TestExecution execution = testExecutionRepository.findById(testExecutionId)
+                .orElseThrow(() -> new RuntimeException("TestExecution not found"));
 
+        List<TestExecutionResponse> responseList =
+                testExecutionResponseRepository.findByTestExecutionId(testExecutionId);
+
+
+        Map<Long, List<Response>> allResponsesByQuestion = new HashMap<>();
+        List<TestExecutionResponseDTO> executionResponseDTOs = new ArrayList<>();
+
+        for (TestExecutionResponse execResponse : responseList) {
+            Question question = execResponse.getQuestion();
+
+
+            allResponsesByQuestion.computeIfAbsent(question.getId(),
+                    id -> responseRepository.findByQuestionId(id));
+
+
+            TestExecutionResponseDTO respDTO = new TestExecutionResponseDTO();
+            respDTO.setId(execResponse.getId());
+            respDTO.setQuestionId(question.getId());
+            respDTO.setAnswer(execResponse.getAnswer());
+            respDTO.setCorrect(execResponse.getCorrect());
+            respDTO.setNotes(execResponse.getNotes());
+
+            executionResponseDTOs.add(respDTO);
+        }
+
+
+        List<QuestionDTO> questionDTOList = responseList.stream().map(execResp -> {
+            Question question = execResp.getQuestion();
+            List<ResponseDTO> responseDTOs = allResponsesByQuestion.getOrDefault(question.getId(), new ArrayList<>())
+                    .stream()
+                    .map(resp -> new ResponseDTO(resp.getId(), resp.getDescription(), resp.getOrder()))
+                    .collect(Collectors.toList());
+
+            QuestionDTO questionDTO = new QuestionDTO();
+            questionDTO.setDescription(question.getDescription());
+            questionDTO.setType(question.getType());
+            questionDTO.setAnswer(execResp.getAnswer()); // respuesta seleccionada
+            questionDTO.setResponses(responseDTOs);
+
+            return questionDTO;
+        }).collect(Collectors.toList());
+
+
+        TestExecutionDTO dto = new TestExecutionDTO();
+        dto.setId(execution.getId());
+        dto.setTestId(execution.getTest().getId());
+        dto.setUserId(execution.getUser().getId());
+        dto.setDate(Date.valueOf(execution.getDate()).toLocalDate());
+        dto.setStartTime(execution.getStartTime());
+        dto.setEndTime(execution.getFinishTime());
+        dto.setResult(execution.getResult());
+        dto.setNotes(execution.getNotes());
+        dto.setExecutionResponsesList(executionResponseDTOs);
+
+        return dto;
+    }
 }
