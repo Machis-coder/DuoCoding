@@ -25,11 +25,7 @@ public class TestExecutionController {
     public List<TestExecution> getTestExecutions() {
         return testExecutionService.getTestExecutions();
     }
-
-    @GetMapping("/user")
-    public List<TestExecution> getTestExecutionByUser(@PathVariable Long userId) {
-        return testExecutionService.getTestExecutionByUser(userId);
-    }
+    
 
     @GetMapping("/test")
     public List<TestExecution> getTestExecutionByTest(@PathVariable Long testId) {
