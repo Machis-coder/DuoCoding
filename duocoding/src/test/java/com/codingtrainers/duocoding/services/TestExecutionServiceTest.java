@@ -129,6 +129,7 @@ public class TestExecutionServiceTest {
 
         com.codingtrainers.duocoding.entities.Test test = new com.codingtrainers.duocoding.entities.Test();
         test.setId(10L);
+        test.setName("test name");
 
         TestExecution testExecution = new TestExecution();
         testExecution.setUser(user);
@@ -156,6 +157,8 @@ public class TestExecutionServiceTest {
         assertEquals(userId, dto.getUserId());
         assertEquals(10L, dto.getTestId());
         assertEquals(10L, dto.getResult());
+        assertEquals(LocalDate.now(), dto.getDate());
+        assertEquals("test name", dto.getTestName());
         assertNotNull(dto.getStartTime());
         assertNotNull(dto.getEndTime());
         assertNotNull(dto.getDate());
