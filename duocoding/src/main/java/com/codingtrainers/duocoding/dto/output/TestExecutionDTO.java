@@ -1,6 +1,7 @@
 package com.codingtrainers.duocoding.dto.output;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.Date;
@@ -11,12 +12,13 @@ public class TestExecutionDTO {
     private Long id;
     private Long testId;
     private Long userId;
-    private Date date;
+    private LocalDate date;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private float result;
     private String notes;
     private List<TestExecutionResponseDTO> executionResponsesList;
+    private String testName;
 
     public Long getId() {
         return id;
@@ -24,6 +26,14 @@ public class TestExecutionDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
     }
 
     public Long getTestId() {
@@ -42,11 +52,11 @@ public class TestExecutionDTO {
         this.userId = userId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

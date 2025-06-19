@@ -3,9 +3,8 @@ package com.codingtrainers.duocoding.controllers;
 
 import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
-import com.codingtrainers.duocoding.entities.Test;
+import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
 import com.codingtrainers.duocoding.entities.TestExecution;
-import com.codingtrainers.duocoding.entities.User;
 import com.codingtrainers.duocoding.services.TestExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +58,9 @@ public class TestExecutionController {
        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
-
+    @GetMapping("/users/{userId}/executions")
+    public ResponseEntity<List<TestExecutionDTO>> getTestExecutionsByUserId(@PathVariable Long userId) {
+        List<TestExecutionDTO> testDtos = testExecutionService.getTestExecutionsByUserId(userId);
+        return ResponseEntity.ok(testDtos);
+    }
 }
