@@ -54,6 +54,7 @@ public class TestExecutionService {
             testExecutionDTO.setEndTime(testExecution.getFinishTime());
             testExecutionDTO.setDate(testExecution.getDate());
             testExecutionDTO.setNotes(testExecution.getNotes());
+            testExecutionDTO.setTestName(testExecution.getTest().getName());
             return testExecutionDTO;
         }).toList();
     }
