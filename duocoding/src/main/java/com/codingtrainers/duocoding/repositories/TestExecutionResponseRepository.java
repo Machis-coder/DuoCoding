@@ -24,4 +24,6 @@ public interface TestExecutionResponseRepository extends CrudRepository<TestExec
     @Query("select ter from TestExecutionResponse ter where ter.testExecution.id = :testExecutionId")
     List<TestExecutionResponse> findAllByTestExecutionId(@Param("testExecutionId") Long testExecutionId);
 
+    List<TestExecutionResponse> findByTestExecutionId(Long testExecutionId);
+
 }
