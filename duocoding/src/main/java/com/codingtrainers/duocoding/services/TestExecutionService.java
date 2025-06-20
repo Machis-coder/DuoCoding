@@ -4,6 +4,8 @@ import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionResponseRequestDTO;
 import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
+import com.codingtrainers.duocoding.dtos.QuestionFullDTO;
+import com.codingtrainers.duocoding.dtos.TestExecutionFullDTO;
 import com.codingtrainers.duocoding.entities.*;
 import com.codingtrainers.duocoding.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +27,12 @@ public class TestExecutionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private TestService testService;
+
+    @Autowired
+    private QuestionService questionService;
 
 
     public List<TestExecution> getTestExecutions() {
@@ -126,6 +134,50 @@ public class TestExecutionService {
 
         testExecutionResponseRepository.save(testExecutionResponse);
         testExecutionRepository.save(testExecution);
+    }
+
+    public TestExecutionFullDTO getTestExecution(Long testExecutionId) {
+
+        TestExecution testExecution = testExecutionRepository.findById(testExecutionId).orElseThrow(()->new EntityNotFoundException("Test Execution not found"));
+
+        Test test = testExecution.getTest();
+
+        TestExecutionFullDTO dto = new TestExecutionFullDTO();
+        dto.setTestId(test.getId());
+        dto.setTestTitle(test.getName());
+        //TODO dto.setTestDescription(test.getDescription());
+
+        List<TestQuestion> testQuestions = questionService.findTestQuestionsByTestId(test.getId());
+        List<TestExecutionResponse> testExecutionResponses = testExecutionResponseRepository.findAllByTestExecutionId(testExecutionId);
+        List<Response> responses = questionService.findAllResponsesByQuestionIds(testQuestions.stream().map(it -> it.getQuestion().getId()).toList());
+        Map<Long, List<Response>> responseMap = new HashMap<>();
+
+        responses.stream().forEach(it -> {
+            List<Response> questionResponses = responseMap.get(it.getQuestion().getId());
+            if (questionResponses == null) {
+                questionResponses = new ArrayList<>();
+                questionResponses.add(it);
+                responseMap.put(it.getQuestion().getId(), questionResponses);
+            } else {
+                questionResponses.add(it);
+            }
+        });
+
+        dto.setQuestions(testExecutionResponses.stream().map(tq -> {
+
+            com.codingtrainers.duocoding.entities.Question question = tq.getQuestion();
+
+            QuestionFullDTO questionDTO = new QuestionFullDTO();
+            questionDTO.setQuestionId(question.getId());
+            questionDTO.setDescription(question.getDescription());
+            questionDTO.setAnswer(tq.getAnswer());
+            questionDTO.setCorrect(tq.getCorrect());
+            questionDTO.setResponses(responseMap.get(questionDTO.getQuestionId()));
+
+            return questionDTO;
+        }).toList());
+
+        return dto;
     }
 
 

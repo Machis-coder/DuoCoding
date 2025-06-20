@@ -1,6 +1,6 @@
 package com.codingtrainers.duocoding.services;
 
-import com.codingtrainers.duocoding.dtos.ExamStructureDTO;
+import com.codingtrainers.duocoding.dtos.TestExecutionFullDTO;
 import com.codingtrainers.duocoding.entities.Response;
 import com.codingtrainers.duocoding.entities.Test;
 import com.codingtrainers.duocoding.entities.TestQuestion;
@@ -56,51 +56,51 @@ public class TestService {
         return "Test eliminado con éxito";
     }
 
-    public ExamStructureDTO getExamStructure(Long testId) {
-    Optional<Test> optionalTest = testRepository.findById(testId);
-    if (optionalTest.isEmpty()) {
-        return null;
-    }
-
-    Test test = optionalTest.get();
-    ExamStructureDTO dto = new ExamStructureDTO();
-    dto.setTestId(test.getId());
-    dto.setTestTitle(test.getName());
-
-    List<TestQuestion> testQuestions = testQuestionRepository.findByTestId(testId);
-
-    dto.setQuestions(testQuestions.stream().map(tq -> {
-        com.codingtrainers.duocoding.entities.Question question = tq.getQuestion();
-        ExamStructureDTO.QuestionDTO questionDTO = new ExamStructureDTO.QuestionDTO();
-        questionDTO.questionId = question.getId();
-        questionDTO.content = question.getDescription();
-
-        Set<Long> correctAnswerIds = new HashSet<>();
-        try {
-            if (question.getAnswer() != null && !question.getAnswer().isEmpty()) {
-                String[] parts = question.getAnswer().split(",");
-                for (String part : parts) {
-                    correctAnswerIds.add(Long.parseLong(part.trim()));
-                }
-            }
-        } catch (NumberFormatException e) {
-            
+    public TestExecutionFullDTO getExamStructure(Long testId) {
+        Optional<Test> optionalTest = testRepository.findById(testId);
+        if (optionalTest.isEmpty()) {
+            return null;
         }
 
-        List<Response> responses = responseRepository.findByQuestionId(question.getId());
-        questionDTO.responses = responses.stream().map(r -> {
-            ExamStructureDTO.ResponseDTO responseDTO = new ExamStructureDTO.ResponseDTO();
-            responseDTO.responseId = r.getId();
-            responseDTO.content = r.getDescription();
-            responseDTO.setCorrect(correctAnswerIds.contains(r.getId()));
-                        return responseDTO;
-        }).toList();
+        Test test = optionalTest.get();
+        TestExecutionFullDTO dto = new TestExecutionFullDTO();
+        dto.setTestId(test.getId());
+        dto.setTestTitle(test.getName());
 
-        return questionDTO;
-    }).toList());
+        List<TestQuestion> testQuestions = testQuestionRepository.findByTestId(testId);
 
-    return dto;
-}
+        dto.setQuestions(testQuestions.stream().map(tq -> {
+            com.codingtrainers.duocoding.entities.Question question = tq.getQuestion();
+            TestExecutionFullDTO.QuestionDTO questionDTO = new TestExecutionFullDTO.QuestionDTO();
+            questionDTO.questionId = question.getId();
+            questionDTO.content = question.getDescription();
+
+            Set<Long> correctAnswerIds = new HashSet<>();
+            try {
+                if (question.getAnswer() != null && !question.getAnswer().isEmpty()) {
+                    String[] parts = question.getAnswer().split(",");
+                    for (String part : parts) {
+                        correctAnswerIds.add(Long.parseLong(part.trim()));
+                    }
+                }
+            } catch (NumberFormatException e) {
+
+            }
+
+            List<Response> responses = responseRepository.findByQuestionId(question.getId());
+            questionDTO.responses = responses.stream().map(r -> {
+                TestExecutionFullDTO.ResponseDTO responseDTO = new TestExecutionFullDTO.ResponseDTO();
+                responseDTO.responseId = r.getId();
+                responseDTO.content = r.getDescription();
+                responseDTO.setCorrect(correctAnswerIds.contains(r.getId()));
+                            return responseDTO;
+            }).toList();
+
+            return questionDTO;
+        }).toList());
+
+        return dto;
+    }
 
     
 }
