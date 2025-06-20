@@ -1,6 +1,5 @@
 package com.codingtrainers.duocoding.dto.input;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

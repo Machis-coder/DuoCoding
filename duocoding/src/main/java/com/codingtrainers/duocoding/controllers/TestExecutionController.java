@@ -3,9 +3,10 @@ package com.codingtrainers.duocoding.controllers;
 
 import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
-import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
+import com.codingtrainers.duocoding.dtos.TestExecutionFullDTO;
 import com.codingtrainers.duocoding.entities.TestExecution;
 import com.codingtrainers.duocoding.services.TestExecutionService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,6 @@ public class TestExecutionController {
     public List<TestExecution> getTestExecutions() {
         return testExecutionService.getTestExecutions();
     }
-    
 
     @GetMapping("/test")
     public List<TestExecution> getTestExecutionByTest(@PathVariable Long testId) {
@@ -55,8 +55,18 @@ public class TestExecutionController {
     }
 
     @GetMapping("/users/{userId}/executions")
-    public ResponseEntity<List<TestExecutionDTO>> getTestExecutionsByUserId(@PathVariable Long userId) {
-        List<TestExecutionDTO> testDtos = testExecutionService.getTestExecutionsByUserId(userId);
+    public ResponseEntity<List<com.codingtrainers.duocoding.dto.output.TestExecutionDTO>> getTestExecutionsByUserId(@PathVariable Long userId) {
+        List<com.codingtrainers.duocoding.dto.output.TestExecutionDTO> testDtos = testExecutionService.getTestExecutionsByUserId(userId);
         return ResponseEntity.ok(testDtos);
+    }
+
+    @GetMapping("/{executionId}/structure")
+    public ResponseEntity<TestExecutionFullDTO> getTextExecution(@PathVariable Long textExecutionId) {
+        try {
+            TestExecutionFullDTO dto = testExecutionService.getTestExecution(textExecutionId);
+            return ResponseEntity.ok(dto);
+        } catch (EntityNotFoundException enfe) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -1,18 +1,12 @@
-// ExamStructureDTO.java
 package com.codingtrainers.duocoding.dtos;
 
 import java.util.List;
 
-public class ExamStructureDTO {
+public class TestExecutionFullDTO {
     public Long testId;
     public String testTitle;
-    public List<QuestionDTO> questions;
+    public List<QuestionFullDTO> questions;
 
-    public static class QuestionDTO {
-        public Long questionId;
-        public String content;
-        public List<ResponseDTO> responses;
-    }
 
     public static class ResponseDTO {
         public Long responseId;
@@ -43,11 +37,11 @@ public class ExamStructureDTO {
         this.testTitle = testTitle;
     }
 
-    public List<QuestionDTO> getQuestions() {
+    public List<QuestionFullDTO> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<QuestionDTO> questions) {
+    public void setQuestions(List<QuestionFullDTO> questions) {
         this.questions = questions;
     }
 
