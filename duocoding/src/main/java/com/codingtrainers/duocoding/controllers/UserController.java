@@ -1,8 +1,10 @@
 package com.codingtrainers.duocoding.controllers;
 
+import com.codingtrainers.duocoding.dto.input.UserRequestDTO;
 import com.codingtrainers.duocoding.dto.output.UserResponseDTO;
 import com.codingtrainers.duocoding.entities.User;
 import com.codingtrainers.duocoding.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,49 +21,105 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<Void> create(@RequestBody User user) {
-        userService.create(user);
-        return ResponseEntity.status(HttpStatus.CREATED).build(); // 201
+        try {
+            userService.create(user);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @GetMapping("/")
+    @GetMapping("/active")
     public ResponseEntity<List<UserResponseDTO>> getAll() {
-        List<UserResponseDTO> users = userService.getAll();
-        return ResponseEntity.ok(users);
+        try {
+            List<UserResponseDTO> users = userService.getAll();
+            if (users.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
     @GetMapping("/inactive")
     public ResponseEntity<List<UserResponseDTO>> getInactiveUsers() {
-        List<UserResponseDTO> users = userService.getInactiveUsers();
-        return ResponseEntity.ok(users);
+        try {
+            List<UserResponseDTO> users = userService.getInactiveUsers();
+            if (users.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> findById(@PathVariable("id") Long id) {
-        UserResponseDTO user = userService.getById(id);
-        return ResponseEntity.ok(user);
+        try {
+            UserResponseDTO user = userService.getById(id);
+            return ResponseEntity.ok(user);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    
+
     @PutMapping("/")
-    public void update(@RequestBody User user){
-        userService.update(user);
+    public ResponseEntity<Void> update(@RequestBody UserRequestDTO user) {
+        try {
+            userService.update(user);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    
+
     @PutMapping("/{id}/activate")
-    public ResponseEntity<Void> activateUser (@PathVariable("id") Long id){
-        userService.activateUser(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> activateUser(@PathVariable("id") Long id) {
+        try {
+            userService.activateUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<UserResponseDTO> findByUsername(@PathVariable String username) {
-        return userService.findByUsername(username)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<UserResponseDTO> findByUsername(@PathVariable("username") String username) {
+        try {
+            return userService.findByUsername(username)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
 }

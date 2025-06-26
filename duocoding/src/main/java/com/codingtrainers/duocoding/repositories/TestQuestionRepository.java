@@ -13,10 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TestQuestionRepository extends JpaRepository<TestQuestion,Long> {
 
-    @Query("select tq from TestQuestion tq where tq.test.id = :testId and tq.active = true")
-    List<TestQuestion> findByTestId(@Param("testId") Long testId);
 
-    @Query("select tq from TestQuestion tq where tq.test.id = :testId and tq.active = true")
-    List<TestQuestion> findAllByTestId(@Param("testId") Long testId);
+
+    @Query("SELECT tq FROM TestQuestion tq WHERE tq.test.id = :testId AND tq.test.active = true AND tq.question.active = true")
+    List<TestQuestion> findByTestId(@Param("testId") Long testId);
 
 }

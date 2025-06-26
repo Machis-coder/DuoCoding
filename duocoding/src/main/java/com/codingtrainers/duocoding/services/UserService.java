@@ -1,6 +1,7 @@
 package com.codingtrainers.duocoding.services;
 
 
+import com.codingtrainers.duocoding.dto.input.UserRequestDTO;
 import com.codingtrainers.duocoding.dto.output.UserResponseDTO;
 import com.codingtrainers.duocoding.entities.User;
 import com.codingtrainers.duocoding.repositories.UserRepository;
@@ -30,10 +31,19 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
         return new UserResponseDTO(user);
     }
-    public void update(User user) {
-        userRepository.findByIdAndActiveTrue(user.getId())
+    public void update(UserRequestDTO user) {
+     User finalUser = userRepository.findByIdAndActiveTrue(user.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        userRepository.save(user);
+     finalUser.setName(user.getName());
+     finalUser.setSurname(user.getSurname());
+     finalUser.setBirthday(user.getBirthday());
+     finalUser.setDni(user.getDni());
+     finalUser.setEmail(user.getEmail());
+     finalUser.setUsername(user.getUsername());
+     String password = user.getPassword();
+     password = HashUtils.sha256(password);
+     finalUser.setPassword(password);
+        userRepository.save(finalUser);
     }
 
     public Optional<UserResponseDTO> findByUsername(String username) {
