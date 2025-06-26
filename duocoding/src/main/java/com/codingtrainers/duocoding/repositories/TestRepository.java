@@ -12,11 +12,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TestRepository extends JpaRepository<Test, Long> {
 
-    @Query("SELECT t.subject.id FROM Test t WHERE t.id = :testId")
-    Long findSubjectIdByTestId(@Param("testId") Long testId);
+    @Query("SELECT t.subject.id FROM Test t WHERE t.id = :testId AND t.active = true")
+    Long findActiveSubjectIdByTestId(@Param("testId") Long testId);
+
+    @Query("SELECT t FROM Test t WHERE t.id = :testId AND t.active = true")
+    Optional<Test> findActiveByTestId(@Param("testId") Long testId);
+
+    @Query("SELECT t FROM Test t WHERE t.active = true")
+    List<Test> findAllActive();
+
+    @Query("SELECT t FROM Test t WHERE t.id = :id AND t.active = true")
+    Optional<Test> findActiveById(@Param("id") Long id);
+
+
 }
 

@@ -3,6 +3,7 @@ package com.codingtrainers.duocoding.controllers;
 import com.codingtrainers.duocoding.entities.Test;
 import com.codingtrainers.duocoding.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,16 +37,14 @@ public class TestController {
         return testService.updateTest(test);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}/delete")
     public ResponseEntity<String> deleteTest(@PathVariable Long id) {
-        String message = testService.deleteTestById(id);
-        return ResponseEntity.ok(message);
+        try {
+            testService.deleteTestById(id);
+            return ResponseEntity.ok("Test marked as inactive successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
-
-    public TestController(TestService testService) {
-        this.testService = testService;
-    }
-
-
 }
 

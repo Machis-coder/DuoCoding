@@ -26,4 +26,5 @@ public interface UserSubjectRepository extends JpaRepository<UserSubject, Long> 
     @Query("SELECT us.subject.id FROM UserSubject us WHERE us.user.id = :userId")
     List<Long> findSubjectIdsByUserId(@Param("userId") Long userId);
 
+
 }

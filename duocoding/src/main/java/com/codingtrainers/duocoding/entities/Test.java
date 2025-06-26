@@ -2,7 +2,6 @@ package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 
 @Entity
 @Table(name = "test")

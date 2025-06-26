@@ -3,7 +3,8 @@ package com.codingtrainers.duocoding.controllers;
 
 import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
-import com.codingtrainers.duocoding.dtos.TestExecutionFullDTO;
+import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
+import com.codingtrainers.duocoding.dto.output.TestExecutionFullDTO;
 import com.codingtrainers.duocoding.entities.TestExecution;
 import com.codingtrainers.duocoding.services.TestExecutionService;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,24 +24,25 @@ public class TestExecutionController {
     private TestExecutionService testExecutionService;
 
     @GetMapping("/")
-    public List<TestExecution> getTestExecutions() {
-        return testExecutionService.getTestExecutions();
+    public ResponseEntity<List<TestExecutionDTO>> getTestExecutions() {
+        List<TestExecutionDTO> executions = testExecutionService.getTestExecutionsDTO();
+        if (executions.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(executions);
     }
 
-
-    @GetMapping("/test")
-    public List<TestExecution> getTestExecutionByTest(@PathVariable Long testId) {
-        return testExecutionService.getTestExecutionByTest(testId);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteTestExecution(@PathVariable Long id) {
+    @PutMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteTestExecution(@PathVariable("id") Long id) {
         testExecutionService.deleteTestExecution(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
-    public Optional<TestExecution> getTestExecutionById(@PathVariable Long id) {
-        return testExecutionService.getTestExecutionById(id);
+    @GetMapping("/id/{id}")
+    public ResponseEntity<TestExecutionDTO> getTestExecutionById(@PathVariable("id") Long id) {
+        return testExecutionService.getTestExecutionDTOById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/")
@@ -52,19 +54,20 @@ public class TestExecutionController {
     @PostMapping("/notes")
     public ResponseEntity<Void> saveTestExecutionNotes(@RequestBody NotesFromTeacherRequestDTO notesFromTeacherRequestDTO) {
         testExecutionService.saveNotesFromTeacher(notesFromTeacherRequestDTO);
-       return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/users/{userId}/executions")
-    public ResponseEntity<List<com.codingtrainers.duocoding.dto.output.TestExecutionDTO>> getTestExecutionsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<com.codingtrainers.duocoding.dto.output.TestExecutionDTO>> getTestExecutionsByUserId(@PathVariable("userId") Long userId) {
         List<com.codingtrainers.duocoding.dto.output.TestExecutionDTO> testDtos = testExecutionService.getTestExecutionsByUserId(userId);
         return ResponseEntity.ok(testDtos);
     }
 
+    //esto no funciona
     @GetMapping("/{executionId}/structure")
-    public ResponseEntity<TestExecutionFullDTO> getTextExecution(@PathVariable Long textExecutionId) {
+    public ResponseEntity<TestExecutionFullDTO> getTextExecution(@PathVariable("executionId") Long executionId) {
         try {
-            TestExecutionFullDTO dto = testExecutionService.getTestExecution(textExecutionId);
+            TestExecutionFullDTO dto = testExecutionService.getTestExecution(executionId);
             return ResponseEntity.ok(dto);
         } catch (EntityNotFoundException enfe) {
             return ResponseEntity.notFound().build();
