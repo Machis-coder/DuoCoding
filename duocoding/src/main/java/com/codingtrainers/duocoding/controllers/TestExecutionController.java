@@ -27,6 +27,7 @@ public class TestExecutionController {
         return testExecutionService.getTestExecutions();
     }
 
+
     @GetMapping("/test")
     public List<TestExecution> getTestExecutionByTest(@PathVariable Long testId) {
         return testExecutionService.getTestExecutionByTest(testId);
