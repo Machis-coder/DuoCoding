@@ -1,6 +1,9 @@
 package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

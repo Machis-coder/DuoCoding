@@ -12,9 +12,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestQuestionRepository extends JpaRepository<TestQuestion,Long> {
-    List<TestQuestion> findByTestId(Long testId);
 
-    @Query("select tq from TestQuestion tq where tq.test.id=:testId")
+    @Query("select tq from TestQuestion tq where tq.test.id = :testId and tq.active = true")
+    List<TestQuestion> findByTestId(@Param("testId") Long testId);
+
+    @Query("select tq from TestQuestion tq where tq.test.id = :testId and tq.active = true")
     List<TestQuestion> findAllByTestId(@Param("testId") Long testId);
 
 }

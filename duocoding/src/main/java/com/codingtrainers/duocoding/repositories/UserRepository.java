@@ -10,16 +10,19 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-        List<User> findAll();
+    List<User> findAllByActiveFalse();
 
-        User save(User user);
+    List<User> findAllByActiveTrue();
 
-        Optional <User> findByUsername(String username);
+    User save(User user);
 
-        Optional<User> findById(Long id);
+    Optional<User> findByUsernameAndActiveTrue(String username);
 
-        List<User> findAllByUsernameOrEmail(String username, String email);
+    Optional<User> findByIdAndActiveTrue(Long id);
 
-    @Query("SELECT u FROM User u WHERE u.name = :username AND u.password = :hashedPassword")
+    List<User> findAllByActiveTrueAndUsernameOrEmail(String username, String email);
+
+    @Query("SELECT u FROM User u WHERE u.name = :username AND u.password = :hashedPassword AND u.active = true")
     List<User> userLogin(@Param("username") String username, @Param("hashedPassword") String hashedPassword);
+
 }

@@ -1,4 +1,4 @@
-package com.codingtrainers.duocoding.dtos;
+package com.codingtrainers.duocoding.dto.output;
 
 import java.util.List;
 

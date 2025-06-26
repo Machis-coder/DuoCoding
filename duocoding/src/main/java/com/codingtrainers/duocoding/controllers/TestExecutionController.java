@@ -3,7 +3,7 @@ package com.codingtrainers.duocoding.controllers;
 
 import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
-import com.codingtrainers.duocoding.dtos.TestExecutionFullDTO;
+import com.codingtrainers.duocoding.dto.output.TestExecutionFullDTO;
 import com.codingtrainers.duocoding.entities.TestExecution;
 import com.codingtrainers.duocoding.services.TestExecutionService;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,7 +33,7 @@ public class TestExecutionController {
         return testExecutionService.getTestExecutionByTest(testId);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}/delete")
     public void deleteTestExecution(@PathVariable Long id) {
         testExecutionService.deleteTestExecution(id);
     }
@@ -52,7 +52,7 @@ public class TestExecutionController {
     @PostMapping("/notes")
     public ResponseEntity<Void> saveTestExecutionNotes(@RequestBody NotesFromTeacherRequestDTO notesFromTeacherRequestDTO) {
         testExecutionService.saveNotesFromTeacher(notesFromTeacherRequestDTO);
-       return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/users/{userId}/executions")
@@ -62,9 +62,9 @@ public class TestExecutionController {
     }
 
     @GetMapping("/{executionId}/structure")
-    public ResponseEntity<TestExecutionFullDTO> getTextExecution(@PathVariable Long textExecutionId) {
+    public ResponseEntity<TestExecutionFullDTO> getTextExecution(@PathVariable Long executionId) {
         try {
-            TestExecutionFullDTO dto = testExecutionService.getTestExecution(textExecutionId);
+            TestExecutionFullDTO dto = testExecutionService.getTestExecution(executionId);
             return ResponseEntity.ok(dto);
         } catch (EntityNotFoundException enfe) {
             return ResponseEntity.notFound().build();

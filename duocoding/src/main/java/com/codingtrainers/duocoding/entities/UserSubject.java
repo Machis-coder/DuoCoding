@@ -2,6 +2,9 @@ package com.codingtrainers.duocoding.entities;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 @Entity
 @Table (name = "user_subject")
@@ -21,11 +24,6 @@ public class UserSubject {
 
     public UserSubject() {}
 
-    public UserSubject(Long id, User user, Subject subject) {
-        this.id = id;
-        this.user = user;
-        this.subject = subject;
-    }
     public Long getId() {
         return id;
     }
