@@ -1,6 +1,5 @@
 package com.codingtrainers.duocoding.controllers;
 
-import com.codingtrainers.duocoding.dtos.ExamStructureDTO;
 import com.codingtrainers.duocoding.entities.Test;
 import com.codingtrainers.duocoding.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +45,7 @@ public class TestController {
     public TestController(TestService testService) {
         this.testService = testService;
     }
-    
-    @GetMapping("/{testId}/structure")
-    public ResponseEntity<ExamStructureDTO> getExamStructure(@PathVariable Long testId) {
-        ExamStructureDTO dto = testService.getExamStructure(testId);
-        if (dto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(dto);
-    }
+
 
 }
 
