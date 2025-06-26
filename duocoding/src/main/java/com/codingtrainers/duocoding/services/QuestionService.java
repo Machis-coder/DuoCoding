@@ -1,7 +1,11 @@
 package com.codingtrainers.duocoding.services;
 
 import com.codingtrainers.duocoding.entities.Question;
+import com.codingtrainers.duocoding.entities.Response;
+import com.codingtrainers.duocoding.entities.TestQuestion;
 import com.codingtrainers.duocoding.repositories.QuestionRepository;
+import com.codingtrainers.duocoding.repositories.ResponseRepository;
+import com.codingtrainers.duocoding.repositories.TestQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,12 @@ public class QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private TestQuestionRepository testQuestionRepository;
+
+    @Autowired
+    private ResponseRepository responseRepository;
 
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
@@ -48,5 +58,17 @@ public class QuestionService {
         }
         questionRepository.deleteById(id);
         return "Question removed successfully";
+    }
+
+    public List<TestQuestion> findTestQuestionsByTestId(Long testId) {
+        return testQuestionRepository.findAllByTestId(testId);
+    }
+
+    public List<Question> findAllByIds(List<Long> ids) {
+        return questionRepository.findAllByIdIn(ids);
+    }
+
+    public List<Response> findAllResponsesByQuestionIds(List<Long> questionIds) {
+        return responseRepository.findAllByQuestionIdIn(questionIds);
     }
 }
