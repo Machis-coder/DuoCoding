@@ -36,18 +36,9 @@ public class QuestionService {
         return questionRepository.findAllByActiveTrue();
     }
 
-    public Optional<Question> getQuestionById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID no puede ser null");
-        }
-
-        Optional<Question> question = questionRepository.findByIdAndActiveTrue(id);
-
-        if (question.isEmpty()) {
-            throw new EntityNotFoundException("Pregunta activa no encontrada con id: " + id);
-        }
-
-        return question;
+    public Question getById(Long id) {
+        return questionRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
     }
 
     public Question createQuestion(Question question) {
@@ -78,21 +69,17 @@ public class QuestionService {
     }
 
     public List<TestQuestion> findTestQuestionsByTestId(Long testId) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
 
-        return testQuestionRepository.findAllByTestId(testId);
+        return testQuestionRepository.findByTestId(testId);
     }
 
     public List<Question> findAllByIds(List<Long> ids) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
+
         return questionRepository.findAllActiveByIdIn(ids);
     }
 
     public List<Response> findAllResponsesByQuestionIds(List<Long> questionIds) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
+
         return responseRepository.findAllActiveByQuestionIdIn(questionIds);
     }
 }

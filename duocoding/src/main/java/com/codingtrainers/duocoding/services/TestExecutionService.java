@@ -11,10 +11,9 @@ import com.codingtrainers.duocoding.dto.output.QuestionFullDTO;
 import com.codingtrainers.duocoding.dto.output.TestExecutionFullDTO;
 import com.codingtrainers.duocoding.entities.*;
 import com.codingtrainers.duocoding.repositories.*;
-import jakarta.persistence.EntityManager;
+
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import org.hibernate.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,28 +38,22 @@ public class TestExecutionService {
     private ResponseRepository responseRepository;
 
     @Autowired
-    private TestService testService;
-
-    @Autowired
     private QuestionService questionService;
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
 
-    public List<TestExecution> getTestExecutions() {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
-        return testExecutionRepository.findAll();
+
+    public List<TestExecutionDTO> getTestExecutionsDTO() {
+        return testExecutionRepository.findAll().stream()
+                .map(TestExecutionDTO::new)
+                .collect(Collectors.toList());
     }
-
 
     public List<TestExecutionDTO> getTestExecutionsByUserId(Long userId) {
         if (userId == null) {
             throw new NullPointerException("userId is null");
         }
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
+
         List<TestExecution> testExecutions = testExecutionRepository.findActiveByUserId(userId);
         return testExecutions.stream().map(testExecution -> {
             TestExecutionDTO testExecutionDTO = new TestExecutionDTO();
@@ -78,24 +71,25 @@ public class TestExecutionService {
         }).toList();
     }
 
-
-    public List<TestExecution> getTestExecutionByTest(Long  testId) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
-        Test test = new Test();
-        test.setId(testId);
-        return testExecutionRepository.findActiveByTest(test);
-    }
     public void deleteTestExecution(Long testExecutionId) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
         testExecutionRepository.deleteById(testExecutionId);
     }
 
-    public Optional<TestExecution> getTestExecutionById(Long id) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("activeFilter").setParameter("isActive", true);
-        return testExecutionRepository.findById(id);
+    public Optional<TestExecutionDTO> getTestExecutionDTOById(Long id) {
+        Optional<TestExecution> optExecution = testExecutionRepository.findById(id);
+        if (optExecution.isEmpty()) return Optional.empty();
+
+        TestExecution execution = optExecution.get();
+
+        List<TestExecutionResponseDTO> responses = testExecutionResponseRepository.findActiveByTestExecutionId(id)
+                .stream()
+                .map(TestExecutionResponseDTO::new)
+                .collect(Collectors.toList());
+
+        TestExecutionDTO dto = new TestExecutionDTO(execution);
+        dto.setExecutionResponsesList(responses);
+
+        return Optional.of(dto);
     }
 
     public void saveTestExecution(TestExecutionRequestDTO dto) {
@@ -159,6 +153,8 @@ public class TestExecutionService {
         testExecutionRepository.save(testExecution);
     }
 
+
+    //NO FUNCIONA
     public TestExecutionFullDTO getTestExecution(Long testExecutionId) {
         TestExecution testExecution = testExecutionRepository.findActiveById(testExecutionId)
                 .orElseThrow(() -> new EntityNotFoundException("Test Execution not found"));
@@ -243,7 +239,7 @@ public class TestExecutionService {
             QuestionDTO questionDTO = new QuestionDTO();
             questionDTO.setDescription(question.getDescription());
             questionDTO.setType(question.getType());
-            questionDTO.setAnswer(execResp.getAnswer()); // respuesta seleccionada
+            questionDTO.setAnswer(execResp.getAnswer());
             questionDTO.setResponses(responseDTOs);
 
             return questionDTO;

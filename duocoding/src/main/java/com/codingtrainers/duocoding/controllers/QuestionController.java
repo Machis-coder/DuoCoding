@@ -26,7 +26,7 @@ public class QuestionController {
     @GetMapping("/{id}")
     public ResponseEntity<Question> getQuestionById(@PathVariable("id") Long id) {
         try {
-            Optional<Question> optionalQuestion = questionService.getQuestionById(id);
+            Optional<Question> optionalQuestion = Optional.ofNullable(questionService.getById(id));
             return optionalQuestion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

@@ -1,11 +1,15 @@
 package com.codingtrainers.duocoding.dto.output;
 
 
+import com.codingtrainers.duocoding.entities.TestExecution;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import java.util.Date;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestExecutionDTO {
 
@@ -20,7 +24,19 @@ public class TestExecutionDTO {
     private List<TestExecutionResponseDTO> executionResponsesList;
     private String testName;
 
-    public Long getId() {
+    public TestExecutionDTO(TestExecution execution) {
+        this.id = execution.getId();
+        this.testId = execution.getTest().getId();
+        this.userId = execution.getUser().getId();
+        this.date = execution.getDate();
+        this.startTime = execution.getStartTime();
+        this.endTime = execution.getFinishTime();
+        this.result = execution.getResult();
+        this.notes = execution.getNotes();
+        this.testName = execution.getTest().getName();
+    }
+
+    Long getId() {
         return id;
     }
 
