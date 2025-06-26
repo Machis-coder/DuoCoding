@@ -136,7 +136,7 @@ public class TestExecutionServiceTest {
         testExecution.setTest(test);
         testExecution.setId(10L);
         testExecution.setNotes("Some notes");
-        testExecution.setResult(10L);
+        testExecution.setResult(10F);
         testExecution.setStartTime(LocalDateTime.now().minusHours(1));
         testExecution.setFinishTime(LocalDateTime.now());
         testExecution.setDate(LocalDate.now());
@@ -144,7 +144,7 @@ public class TestExecutionServiceTest {
         List<TestExecution> executions = new ArrayList<>();
         executions.add(testExecution);
 
-        when(testExecutionRepository.findByUserId(userId)).thenReturn(executions);
+        when(testExecutionRepository.findActiveByUserId(userId)).thenReturn(executions);
 
         List<TestExecutionDTO> dtos = testExecutionService.getTestExecutionsByUserId(userId);
 

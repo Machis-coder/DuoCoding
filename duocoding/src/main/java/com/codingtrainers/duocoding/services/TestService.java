@@ -1,19 +1,19 @@
 package com.codingtrainers.duocoding.services;
 
-import com.codingtrainers.duocoding.dtos.TestExecutionFullDTO;
-import com.codingtrainers.duocoding.entities.Response;
+
 import com.codingtrainers.duocoding.entities.Test;
-import com.codingtrainers.duocoding.entities.TestQuestion;
+
 import com.codingtrainers.duocoding.repositories.ResponseRepository;
 import com.codingtrainers.duocoding.repositories.TestQuestionRepository;
 import com.codingtrainers.duocoding.repositories.TestRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class TestService {
@@ -33,11 +33,11 @@ public class TestService {
     }
 
     public List<Test> getAllTests() {
-        return testRepository.findAll();
+        return testRepository.findAllActive();
     }
 
     public Test getTestById(Long id) {
-        return testRepository.findById(id).orElseThrow(() -> new RuntimeException("Test not found"));
+        return testRepository.findActiveById(id).orElseThrow(() -> new RuntimeException("Test not found"));
     }
 
     public Test createTest(Test test) {
@@ -48,15 +48,16 @@ public class TestService {
         return testRepository.save(test);
     }
 
-    public String deleteTestById(Long id) {
-        if (!testRepository.existsById(id)) {
-            throw new RuntimeException("Test not found");
-        }
-        testRepository.deleteById(id);
-        return "Test eliminado con éxito";
+    public void deleteTestById(Long id) {
+        Test test = testRepository.findActiveByTestId(id)
+                .orElseThrow(() -> new RuntimeException("Test not found"));
+        test.setActive(false);
+        testRepository.save(test);
+
     }
 
-    public TestExecutionFullDTO getExamStructure(Long testId) {
+   /* public TestExecutionFullDTO getExamStructure(Long testId) {
+
         Optional<Test> optionalTest = testRepository.findById(testId);
         if (optionalTest.isEmpty()) {
             return null;
@@ -100,7 +101,7 @@ public class TestService {
         }).toList());
 
         return dto;
-    }
+    }*/
 
     
 }

@@ -1,4 +1,4 @@
-package com.codingtrainers.duocoding.dtos;
+package com.codingtrainers.duocoding.dto.output;
 
 import com.codingtrainers.duocoding.entities.Response;
 
@@ -9,7 +9,7 @@ public class QuestionFullDTO {
     private Long questionId;
     private String description;
     private String answer;
-    private boolean correct;
+    private Boolean correct;
     private List<Response> responses;
 
     public Long getQuestionId() {
@@ -40,7 +40,7 @@ public class QuestionFullDTO {
         return correct;
     }
 
-    public void setCorrect(boolean correct) {
+    public void setCorrect(Boolean correct) {
         this.correct = correct;
     }
 

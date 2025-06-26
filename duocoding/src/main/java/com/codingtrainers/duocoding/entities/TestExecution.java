@@ -1,8 +1,8 @@
 package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
 
-import java.sql.Date;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +33,7 @@ public class TestExecution {
     private LocalDateTime finishTime;
 
     @Column (name = "result")
-    private float result;
+    private Float result;
 
     @Column (name = "notes")
     private String notes;
@@ -95,7 +95,7 @@ public class TestExecution {
         return result;
     }
 
-    public void setResult(float result) {
+    public void setResult(Float result) {
         this.result = result;
     }
 
@@ -111,7 +111,7 @@ public class TestExecution {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 }
