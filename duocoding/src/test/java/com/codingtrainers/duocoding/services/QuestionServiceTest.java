@@ -56,21 +56,21 @@ public class QuestionServiceTest {
     }
 
     @Test
-    void getQuestionById_returnsQuestion() {
+    void getById_returnsQuestion() {
         when(questionRepository.findById(1L)).thenReturn(java.util.Optional.of(sampleQuestion));
 
-        Question question = questionService.getQuestionById(1L);
+        Question question = questionService.getById(1L);
 
         assertEquals(QuestionType.FREETEXT, question.getType());
         verify(questionRepository, times(1)).findById(1L);
     }
 
     @Test
-    void getQuestionById_throwsExceptionWhenNotFound() {
+    void getById_throwsExceptionWhenNotFound() {
         when(questionRepository.findById(2L)).thenReturn(java.util.Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            questionService.getQuestionById(2L);
+            questionService.getById(2L);
         });
 
         assertEquals("Question Not Found", exception.getMessage());
@@ -78,9 +78,9 @@ public class QuestionServiceTest {
     }
 
     @Test
-    void getQuestionById_withNullId_throwsException() {
+    void getById_withNullId_throwsException() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            questionService.getQuestionById(null);
+            questionService.getById(null);
         });
 
         assertEquals("ID cannot be null", exception.getMessage());
@@ -187,7 +187,7 @@ public class QuestionServiceTest {
         assertEquals(QuestionType.FREETEXT, created.getType());
 
         when(questionRepository.findById(1L)).thenReturn(java.util.Optional.of(sampleQuestion));
-        Question fetched = questionService.getQuestionById(1L);
+        Question fetched = questionService.getById(1L);
         assertEquals(QuestionType.FREETEXT, fetched.getType());
 
         when(questionRepository.existsById(1L)).thenReturn(true);
