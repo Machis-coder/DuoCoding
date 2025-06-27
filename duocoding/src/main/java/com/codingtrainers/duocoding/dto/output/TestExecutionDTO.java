@@ -36,7 +36,7 @@ public class TestExecutionDTO {
         this.testName = execution.getTest().getName();
     }
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 
