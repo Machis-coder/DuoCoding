@@ -1,9 +1,7 @@
 package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
+
 
 @Entity
 @Table (name = "test_question")
@@ -20,6 +18,8 @@ public class TestQuestion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
+    @Column (name = "active")
+    private Boolean active;
 
     public TestQuestion() {}
 
@@ -27,6 +27,14 @@ public class TestQuestion {
         this.id = id;
         this.test = test;
         this.question = question;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Long getId() {
