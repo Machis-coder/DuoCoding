@@ -1,9 +1,7 @@
 package com.codingtrainers.duocoding.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
+
 
 @Entity
 @Table (name = "test_subject")
@@ -20,6 +18,8 @@ public class TestSubject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private Subject subject;
+    @Column (name = "active")
+    private Boolean active;
 
     public TestSubject() {}
 
