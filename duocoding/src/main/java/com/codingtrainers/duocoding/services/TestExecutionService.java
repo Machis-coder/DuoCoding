@@ -44,7 +44,7 @@ public class TestExecutionService {
 
 
     public List<TestExecutionDTO> getTestExecutionsDTO() {
-        return testExecutionRepository.findAll().stream()
+        return testExecutionRepository.findAllByActiveTrue().stream()
                 .map(TestExecutionDTO::new)
                 .collect(Collectors.toList());
     }
@@ -72,8 +72,13 @@ public class TestExecutionService {
     }
 
     public void deleteTestExecution(Long testExecutionId) {
-        testExecutionRepository.deleteById(testExecutionId);
+        TestExecution execution = testExecutionRepository.findActiveById(testExecutionId)
+                .orElseThrow(() -> new RuntimeException("TestExecution not found"));
+
+        execution.setActive(false);
+        testExecutionRepository.save(execution);
     }
+
 
     public Optional<TestExecutionDTO> getTestExecutionDTOById(Long id) {
         Optional<TestExecution> optExecution = testExecutionRepository.findById(id);
@@ -200,7 +205,7 @@ public class TestExecutionService {
 //todo Arreglar este método
 
     public TestExecutionDTO gesTestExecutionById(Long testExecutionId) {
-        TestExecution execution = testExecutionRepository.findById(testExecutionId)
+        TestExecution execution = testExecutionRepository.findActiveById(testExecutionId)
                 .orElseThrow(() -> new RuntimeException("TestExecution not found"));
 
         List<TestExecutionResponse> responseList =
