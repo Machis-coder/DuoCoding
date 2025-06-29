@@ -19,9 +19,8 @@ public class SubjectService {
     private EntityManager entityManager;
 
     public List<Subject> getAllSubjects() {
-        return subjectRepository.findAll();
+        return subjectRepository.findAllByActiveTrue();
     }
-
     public Optional<Subject> getById(Long id) {
 
         return subjectRepository.findByIdAndActiveTrue(id);
