@@ -29,6 +29,10 @@ public interface TestRepository extends JpaRepository<Test, Long> {
     @Query("SELECT t FROM Test t WHERE t.id = :id AND t.active = true")
     Optional<Test> findActiveById(@Param("id") Long id);
 
+    @Query("SELECT t FROM Test t WHERE t.id = :id AND t.active = false")
+    Optional<Test> findFalseById(@Param("id") Long id);
+
+
 
 }
 

@@ -31,6 +31,14 @@ public class TestExecutionController {
         }
         return ResponseEntity.ok(executions);
     }
+    @GetMapping("/false")
+    public ResponseEntity<List<TestExecutionDTO>> getDeletedTestExecutions() {
+        List<TestExecutionDTO> executions = testExecutionService.getDeletedTestExecutionsDTO();
+        if (executions.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(executions);
+    }
 
     @PutMapping("/{id}/delete")
     public ResponseEntity<Void> deleteTestExecution(@PathVariable("id") Long id) {

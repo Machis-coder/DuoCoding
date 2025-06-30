@@ -2,9 +2,6 @@ package com.codingtrainers.duocoding.entities;
 
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 
 @Entity
 @Table (name = "question")
