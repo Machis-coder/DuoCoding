@@ -102,6 +102,7 @@ public class TestExecutionService {
         user.setId(dto.getUserId());
         Test test = new Test();
         test.setId(dto.getTestId());
+
         TestExecution testExecution = new TestExecution();
         testExecution.setUser(user);
         testExecution.setTest(test);
@@ -112,20 +113,27 @@ public class TestExecutionService {
         testExecution.setResult(0F);
         testExecution.setActive(true);
 
-        testExecutionRepository.save(testExecution);
         List<Long> questionIds = dto.getResponses()
                 .stream()
                 .map(TestExecutionResponseRequestDTO::getQuestionId)
                 .collect(Collectors.toList());
+
         List<Question> questions = questionRepository.findAllActiveByIdIn(questionIds);
         Map<Long, Question> questionMap = questions.stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
+
+        float correctCount = 0f;
+        int totalQuestions = dto.getResponses().size();
+
+        List<TestExecutionResponse> responsesToSave = new ArrayList<>();
+
         for (TestExecutionResponseRequestDTO responseDTO : dto.getResponses()) {
             Question question = questionMap.get(responseDTO.getQuestionId());
 
             if (question == null) {
                 throw new RuntimeException("Question not found: " + responseDTO.getQuestionId());
             }
+
             TestExecutionResponse testExecutionResponse = new TestExecutionResponse();
             testExecutionResponse.setQuestion(question);
             testExecutionResponse.setAnswer(responseDTO.getAnswer());
@@ -134,15 +142,27 @@ public class TestExecutionService {
 
             if (testExecutionResponse.getAnswer().equals(question.getAnswer())) {
                 testExecutionResponse.setCorrect(true);
-                testExecution.setResult(testExecution.getResult() + 1);
+                correctCount++;
             } else {
                 testExecutionResponse.setCorrect(false);
             }
-
-            testExecutionResponseRepository.save(testExecutionResponse);
+            responsesToSave.add(testExecutionResponse);
         }
-        testExecutionRepository.save(testExecution);
+
+        float score = 0f;
+        if (totalQuestions > 0) {
+            score = (correctCount / totalQuestions) * 10f;
+        }
+        testExecution.setResult(score);
+
+        TestExecution savedTestExecution = testExecutionRepository.save(testExecution);
+
+        for (TestExecutionResponse response : responsesToSave) {
+            response.setTestExecution(savedTestExecution);
+            testExecutionResponseRepository.save(response);
+        }
     }
+
 
     public void saveNotesFromTeacher(NotesFromTeacherRequestDTO notes) {
         TestExecution testExecution = testExecutionRepository.findActiveById(notes.getTestExecutionId())
