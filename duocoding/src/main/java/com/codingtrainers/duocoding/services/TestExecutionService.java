@@ -3,7 +3,7 @@ package com.codingtrainers.duocoding.services;
 import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionResponseRequestDTO;
-import com.codingtrainers.duocoding.dto.output.QuestionDTO;
+import com.codingtrainers.duocoding.dto.output.QuestionResponseDTO;
 import com.codingtrainers.duocoding.dto.output.ResponseDTO;
 import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
 import com.codingtrainers.duocoding.dto.output.TestExecutionResponseDTO;
@@ -44,7 +44,13 @@ public class TestExecutionService {
 
 
     public List<TestExecutionDTO> getTestExecutionsDTO() {
-        return testExecutionRepository.findAll().stream()
+        return testExecutionRepository.findAllByActiveTrue().stream()
+                .map(TestExecutionDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<TestExecutionDTO> getDeletedTestExecutionsDTO() {
+        return testExecutionRepository.findAllByActiveFalse().stream()
                 .map(TestExecutionDTO::new)
                 .collect(Collectors.toList());
     }
@@ -72,8 +78,13 @@ public class TestExecutionService {
     }
 
     public void deleteTestExecution(Long testExecutionId) {
-        testExecutionRepository.deleteById(testExecutionId);
+        TestExecution execution = testExecutionRepository.findActiveById(testExecutionId)
+                .orElseThrow(() -> new RuntimeException("TestExecution not found"));
+
+        execution.setActive(false);
+        testExecutionRepository.save(execution);
     }
+
 
     public Optional<TestExecutionDTO> getTestExecutionDTOById(Long id) {
         Optional<TestExecution> optExecution = testExecutionRepository.findById(id);
@@ -97,6 +108,7 @@ public class TestExecutionService {
         user.setId(dto.getUserId());
         Test test = new Test();
         test.setId(dto.getTestId());
+
         TestExecution testExecution = new TestExecution();
         testExecution.setUser(user);
         testExecution.setTest(test);
@@ -107,20 +119,27 @@ public class TestExecutionService {
         testExecution.setResult(0F);
         testExecution.setActive(true);
 
-        testExecutionRepository.save(testExecution);
         List<Long> questionIds = dto.getResponses()
                 .stream()
                 .map(TestExecutionResponseRequestDTO::getQuestionId)
                 .collect(Collectors.toList());
+
         List<Question> questions = questionRepository.findAllActiveByIdIn(questionIds);
         Map<Long, Question> questionMap = questions.stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
+
+        float correctCount = 0f;
+        int totalQuestions = dto.getResponses().size();
+
+        List<TestExecutionResponse> responsesToSave = new ArrayList<>();
+
         for (TestExecutionResponseRequestDTO responseDTO : dto.getResponses()) {
             Question question = questionMap.get(responseDTO.getQuestionId());
 
             if (question == null) {
                 throw new RuntimeException("Question not found: " + responseDTO.getQuestionId());
             }
+
             TestExecutionResponse testExecutionResponse = new TestExecutionResponse();
             testExecutionResponse.setQuestion(question);
             testExecutionResponse.setAnswer(responseDTO.getAnswer());
@@ -129,15 +148,27 @@ public class TestExecutionService {
 
             if (testExecutionResponse.getAnswer().equals(question.getAnswer())) {
                 testExecutionResponse.setCorrect(true);
-                testExecution.setResult(testExecution.getResult() + 1);
+                correctCount++;
             } else {
                 testExecutionResponse.setCorrect(false);
             }
-
-            testExecutionResponseRepository.save(testExecutionResponse);
+            responsesToSave.add(testExecutionResponse);
         }
-        testExecutionRepository.save(testExecution);
+
+        float score = 0f;
+        if (totalQuestions > 0) {
+            score = (correctCount / totalQuestions) * 10f;
+        }
+        testExecution.setResult(score);
+
+        TestExecution savedTestExecution = testExecutionRepository.save(testExecution);
+
+        for (TestExecutionResponse response : responsesToSave) {
+            response.setTestExecution(savedTestExecution);
+            testExecutionResponseRepository.save(response);
+        }
     }
+
 
     public void saveNotesFromTeacher(NotesFromTeacherRequestDTO notes) {
         TestExecution testExecution = testExecutionRepository.findActiveById(notes.getTestExecutionId())
@@ -200,7 +231,7 @@ public class TestExecutionService {
 //todo Arreglar este método
 
     public TestExecutionDTO gesTestExecutionById(Long testExecutionId) {
-        TestExecution execution = testExecutionRepository.findById(testExecutionId)
+        TestExecution execution = testExecutionRepository.findActiveById(testExecutionId)
                 .orElseThrow(() -> new RuntimeException("TestExecution not found"));
 
         List<TestExecutionResponse> responseList =
@@ -229,20 +260,20 @@ public class TestExecutionService {
         }
 
 
-        List<QuestionDTO> questionDTOList = responseList.stream().map(execResp -> {
+        List<QuestionResponseDTO> questionResponseDTOList = responseList.stream().map(execResp -> {
             Question question = execResp.getQuestion();
             List<ResponseDTO> responseDTOs = allResponsesByQuestion.getOrDefault(question.getId(), new ArrayList<>())
                     .stream()
                     .map(resp -> new ResponseDTO(resp.getId(), resp.getDescription(), resp.getOrder()))
                     .collect(Collectors.toList());
 
-            QuestionDTO questionDTO = new QuestionDTO();
-            questionDTO.setDescription(question.getDescription());
-            questionDTO.setType(question.getType());
-            questionDTO.setAnswer(execResp.getAnswer());
-            questionDTO.setResponses(responseDTOs);
+            QuestionResponseDTO questionResponseDTO = new QuestionResponseDTO();
+            questionResponseDTO.setDescription(question.getDescription());
+            questionResponseDTO.setType(question.getType());
+            questionResponseDTO.setAnswer(execResp.getAnswer());
+            questionResponseDTO.setResponses(responseDTOs);
 
-            return questionDTO;
+            return questionResponseDTO;
         }).toList();
 
 

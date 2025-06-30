@@ -5,6 +5,7 @@ import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionResponseRequestDTO;
 
 import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
+import com.codingtrainers.duocoding.dto.output.TestExecutionResponseDTO;
 import com.codingtrainers.duocoding.entities.Question;
 import com.codingtrainers.duocoding.entities.TestExecution;
 import com.codingtrainers.duocoding.entities.TestExecutionResponse;
@@ -12,7 +13,7 @@ import com.codingtrainers.duocoding.entities.User;
 import com.codingtrainers.duocoding.repositories.QuestionRepository;
 import com.codingtrainers.duocoding.repositories.TestExecutionRepository;
 import com.codingtrainers.duocoding.repositories.TestExecutionResponseRepository;
-import net.bytebuddy.asm.Advice;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -21,17 +22,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Date;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
-
 
 @ExtendWith(MockitoExtension.class)
 public class TestExecutionServiceTest {
@@ -50,7 +50,6 @@ public class TestExecutionServiceTest {
 
     @Test
     void saveTestExecutionTest() {
-
         TestExecutionResponseRequestDTO responseDTO1 = new TestExecutionResponseRequestDTO();
         responseDTO1.setQuestionId(1L);
         responseDTO1.setAnswer("3");
@@ -76,7 +75,7 @@ public class TestExecutionServiceTest {
         when(testExecutionRepository.save(Mockito.any(TestExecution.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        when(questionRepository.findAllById(List.of(1L, 2L)))
+        when(questionRepository.findAllActiveByIdIn(List.of(1L, 2L)))
                 .thenReturn(List.of(question1, question2));
 
         when(testExecutionResponseRepository.save(Mockito.any(TestExecutionResponse.class)))
@@ -95,29 +94,31 @@ public class TestExecutionServiceTest {
         for (TestExecutionResponse response : savedResponses) {
             assertEquals(savedExecution, response.getTestExecution());
         }
-        verify(questionRepository, times(1)).findAllById(List.of(1L, 2L));
+
+        verify(questionRepository, times(1)).findAllActiveByIdIn(List.of(1L, 2L));
     }
 
     @Test
-    void notesFromTeacherTest () {
+    void notesFromTeacherTest() {
         NotesFromTeacherRequestDTO notes = new NotesFromTeacherRequestDTO();
         notes.setTestExecutionId(1L);
         notes.setTestExecutionNotes("test note");
         notes.setTestExecutionResponseId(1L);
         notes.setTestExecutionResponseNotes("response note");
 
-        TestExecution  testExecution = new TestExecution();
+        TestExecution testExecution = new TestExecution();
         TestExecutionResponse testExecutionResponse = new TestExecutionResponse();
 
-        when(testExecutionRepository.findById(1L)).thenReturn(Optional.of(testExecution));
-        when(testExecutionResponseRepository.findById(1L)).thenReturn(Optional.of(testExecutionResponse));
+        when(testExecutionRepository.findActiveById(1L)).thenReturn(Optional.of(testExecution));
+        when(testExecutionResponseRepository.findActiveById(1L)).thenReturn(Optional.of(testExecutionResponse));
 
         testExecutionService.saveNotesFromTeacher(notes);
 
-        assertEquals("test note", notes.getTestExecutionNotes());
-        assertEquals("response note", notes.getTestExecutionResponseNotes());
-        verify(testExecutionRepository, atLeastOnce()).findById(1L);
-        verify(testExecutionResponseRepository, atLeastOnce()).findById(1L);
+        assertEquals("test note", testExecution.getNotes());
+        assertEquals("response note", testExecutionResponse.getNotes());
+
+        verify(testExecutionRepository, atLeastOnce()).findActiveById(1L);
+        verify(testExecutionResponseRepository, atLeastOnce()).findActiveById(1L);
     }
 
     @Test
@@ -156,7 +157,7 @@ public class TestExecutionServiceTest {
         assertEquals("Some notes", dto.getNotes());
         assertEquals(userId, dto.getUserId());
         assertEquals(10L, dto.getTestId());
-        assertEquals(10L, dto.getResult());
+        assertEquals(10F, dto.getResult());
         assertEquals(LocalDate.now(), dto.getDate());
         assertEquals("test name", dto.getTestName());
         assertNotNull(dto.getStartTime());
@@ -170,5 +171,87 @@ public class TestExecutionServiceTest {
             testExecutionService.getTestExecutionsByUserId(null);
         });
     }
+
+    @Test
+    void getTestExecutionById_Success() {
+        Long testExecutionId = 1L;
+
+        TestExecution testExecution = new TestExecution();
+        testExecution.setId(testExecutionId);
+
+        com.codingtrainers.duocoding.entities.Test test = new com.codingtrainers.duocoding.entities.Test();
+        test.setId(99L);
+        testExecution.setTest(test);
+
+        testExecution.setResult(95.5f);
+
+        User user = new User();
+        user.setId(42L);
+        testExecution.setUser(user);
+
+        when(testExecutionRepository.findById(testExecutionId))
+                .thenReturn(Optional.of(testExecution));
+
+        when(testExecutionResponseRepository.findActiveByTestExecutionId(testExecutionId))
+                .thenReturn(Collections.emptyList());
+
+        Optional<TestExecutionDTO> result = testExecutionService.getTestExecutionDTOById(testExecutionId);
+
+        assertTrue(result.isPresent());
+        assertEquals(testExecutionId, result.get().getId());
+        assertEquals(99L, result.get().getTestId());
+        assertEquals(42L, result.get().getUserId());
+    }
+
+
+    @Test
+    void getTestExecutionById_NotFound() {
+        Long testExecutionId = 1L;
+
+        lenient().when(testExecutionRepository.findById(testExecutionId))
+                .thenReturn(Optional.empty());
+
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
+            testExecutionService.gesTestExecutionById(testExecutionId);
+        });
+
+        assertEquals("TestExecution not found", thrown.getMessage());
+    }
+
+
+    @Test
+    void getTestExecutionsByUserId_EmptyList() {
+        Long userId = 42L;
+
+        when(testExecutionRepository.findActiveByUserId(userId)).thenReturn(Collections.emptyList());
+
+        List<TestExecutionDTO> results = testExecutionService.getTestExecutionsByUserId(userId);
+
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+
+        verify(testExecutionRepository).findActiveByUserId(userId);
+    }
+
+    @Test
+    void saveTestExecution_WithEmptyResponses() {
+        TestExecutionRequestDTO requestDTO = new TestExecutionRequestDTO();
+        requestDTO.setTestId(1L);
+        requestDTO.setUserId(1L);
+        requestDTO.setResponses(Collections.emptyList());
+
+        when(testExecutionRepository.save(Mockito.any(TestExecution.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        when(questionRepository.findAllActiveByIdIn(Collections.emptyList()))
+                .thenReturn(Collections.emptyList());
+
+        testExecutionService.saveTestExecution(requestDTO);
+
+        verify(testExecutionRepository).save(Mockito.any(TestExecution.class));
+        verify(questionRepository).findAllActiveByIdIn(Collections.emptyList());
+        verify(testExecutionResponseRepository, never()).save(Mockito.any(TestExecutionResponse.class));
+    }
+
 }
 
