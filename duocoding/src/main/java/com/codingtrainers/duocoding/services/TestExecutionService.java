@@ -3,7 +3,7 @@ package com.codingtrainers.duocoding.services;
 import com.codingtrainers.duocoding.dto.input.NotesFromTeacherRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionRequestDTO;
 import com.codingtrainers.duocoding.dto.input.TestExecutionResponseRequestDTO;
-import com.codingtrainers.duocoding.dto.output.QuestionDTO;
+import com.codingtrainers.duocoding.dto.output.QuestionResponseDTO;
 import com.codingtrainers.duocoding.dto.output.ResponseDTO;
 import com.codingtrainers.duocoding.dto.output.TestExecutionDTO;
 import com.codingtrainers.duocoding.dto.output.TestExecutionResponseDTO;
@@ -45,6 +45,12 @@ public class TestExecutionService {
 
     public List<TestExecutionDTO> getTestExecutionsDTO() {
         return testExecutionRepository.findAllByActiveTrue().stream()
+                .map(TestExecutionDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<TestExecutionDTO> getDeletedTestExecutionsDTO() {
+        return testExecutionRepository.findAllByActiveFalse().stream()
                 .map(TestExecutionDTO::new)
                 .collect(Collectors.toList());
     }
@@ -254,20 +260,20 @@ public class TestExecutionService {
         }
 
 
-        List<QuestionDTO> questionDTOList = responseList.stream().map(execResp -> {
+        List<QuestionResponseDTO> questionResponseDTOList = responseList.stream().map(execResp -> {
             Question question = execResp.getQuestion();
             List<ResponseDTO> responseDTOs = allResponsesByQuestion.getOrDefault(question.getId(), new ArrayList<>())
                     .stream()
                     .map(resp -> new ResponseDTO(resp.getId(), resp.getDescription(), resp.getOrder()))
                     .collect(Collectors.toList());
 
-            QuestionDTO questionDTO = new QuestionDTO();
-            questionDTO.setDescription(question.getDescription());
-            questionDTO.setType(question.getType());
-            questionDTO.setAnswer(execResp.getAnswer());
-            questionDTO.setResponses(responseDTOs);
+            QuestionResponseDTO questionResponseDTO = new QuestionResponseDTO();
+            questionResponseDTO.setDescription(question.getDescription());
+            questionResponseDTO.setType(question.getType());
+            questionResponseDTO.setAnswer(execResp.getAnswer());
+            questionResponseDTO.setResponses(responseDTOs);
 
-            return questionDTO;
+            return questionResponseDTO;
         }).toList();
 
 

@@ -3,12 +3,31 @@ package com.codingtrainers.duocoding.dto.output;
 import com.codingtrainers.duocoding.entities.QuestionType;
 
 import java.util.List;
+public class QuestionResponseDTO {
 
-public class QuestionDTO {
+    private Long id;
     private String answer;
     private QuestionType type;
     private String description;
     private List<ResponseDTO> responses;
+
+    public QuestionResponseDTO() {}
+
+    public QuestionResponseDTO(Long id, String answer, QuestionType type, String description, List<ResponseDTO> responses) {
+        this.id = id;
+        this.answer = answer;
+        this.type = type;
+        this.description = description;
+        this.responses = responses;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAnswer() {
         return answer;
@@ -41,4 +60,5 @@ public class QuestionDTO {
     public void setResponses(List<ResponseDTO> responses) {
         this.responses = responses;
     }
+
 }
