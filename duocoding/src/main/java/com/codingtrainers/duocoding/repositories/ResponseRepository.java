@@ -24,4 +24,6 @@ public interface ResponseRepository extends JpaRepository<Response, Long> {
     @Query("SELECT r FROM Response r WHERE r.question.id IN (:questionIds) AND r.active = true")
     List<Response> findAllActiveByQuestionIdIn(@Param("questionIds") List<Long> questionIds);
 
+    List<Response> findByQuestionId(Long questionId);
+
 }

@@ -1,0 +1,23 @@
+.login-container {
+  max-width: 400px;
+  min-width: 400px;
+  /*margin: 5px; */
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.login-container:hover {
+  max-width: 400px;
+  /*margin: 5px;*/
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #022446;
+  color: white;
+}
+
+h2, p {
+  text-align: center;
+}

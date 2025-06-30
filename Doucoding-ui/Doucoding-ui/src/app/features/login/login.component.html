@@ -1,0 +1,11 @@
+<div class="login-container ">
+    <h2>Iniciar Sesión</h2>
+    <div class="form-group">
+        <input [(ngModel)]="username" type="text" placeholder="Username" />
+    </div>
+    <div class="form-group">
+        <input [(ngModel)]="password" type="password" placeholder="Password" /><br/>
+    </div>
+    <app-button (click)="onLogin()" text="Entrar"  />
+
+</div>

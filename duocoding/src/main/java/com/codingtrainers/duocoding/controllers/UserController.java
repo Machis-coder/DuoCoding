@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/active")
+    @GetMapping("/")
     public ResponseEntity<List<UserResponseDTO>> getAll() {
         try {
             List<UserResponseDTO> users = userService.getAll();
@@ -71,19 +72,13 @@ public class UserController {
         }
     }
 
+
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody UserRequestDTO user) {
-        try {
-            userService.update(user);
-            return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity update(@RequestBody User user){
+        userService.update(user);
+        return ResponseEntity.ok().build();
     }
+
 
     @PutMapping("/{id}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {

@@ -1,0 +1,36 @@
+.generic-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.generic-table th,
+.generic-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.generic-table thead {
+  background-color: #022446;;
+  color: white;
+  font-weight: bold;
+}
+
+.generic-table tfoot {
+  background-color: #022446;
+  color: white;
+  font-style: italic;
+}
+
+.row-even {
+  background-color: white;
+}
+
+.row-odd {
+  background-color: lightgrey;
+}
+
+.row-even:hover, .row-odd:hover {
+  background-color: grey;
+}
+

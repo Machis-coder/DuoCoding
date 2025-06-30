@@ -1,0 +1,9 @@
+<app-home-navigation/>
+
+<app-table [data] = userList
+    [headers] = "['name', 'surname', 'dni', 'role']"
+    [rowkey] = "'id'"
+    (rowDblClick) = "gotoEdit($event)"
+/>
+
+<button (click)="gotoNew()">New User</button>

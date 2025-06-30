@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "nickUsuario": "juan",
+    "contrasena": "1234",
+    "fechaHoraCreacion": "2025-05-14T20:06:17",
+    "genero": {
+      "id": 1,
+      "nombre": "masculino"
+    },
+    "nombre": "Juan Antonio",
+    "primerApellido": "Pérez",
+    "segundoApellido": null,
+    "fechaNacimiento": "1990-06-15",
+    "horaDesayuno": "08:00:00",
+    "puestoTrabajo": {
+      "id": 1,
+      "nombre": "Desarrollador"
+    },
+    "admin": true
+  },
+  {
+    "id": 2,
+    "nickUsuario": "pedro",
+    "contrasena": "4567",
+    "fechaHoraCreacion": "2025-05-14T18:07:33",
+    "genero": {
+      "id": 1,
+      "nombre": "masculino"
+    },
+    "nombre": "Pedro Luis",
+    "primerApellido": "Sanchez",
+    "segundoApellido": "Segundo",
+    "fechaNacimiento": "2025-05-14",
+    "horaDesayuno": "13:14:56",
+    "puestoTrabajo": {
+      "id": 1,
+      "nombre": "Desarrollador"
+    },
+    "admin": false
+  },
+  {
+    "id": 3,
+    "nickUsuario": "luisa",
+    "contrasena": "8901",
+    "fechaHoraCreacion": "2025-05-14T18:07:33",
+    "genero": {
+      "id": 2,
+      "nombre": "femenino"
+    },
+    "nombre": "Luisa Alfonsina",
+    "primerApellido": "Garcia",
+    "segundoApellido": "Ramirez",
+    "fechaNacimiento": "2025-05-14",
+    "horaDesayuno": "13:14:56",
+    "puestoTrabajo": {
+      "id": 4,
+      "nombre": "Carpintera"
+    },
+    "admin": false
+  }
+]

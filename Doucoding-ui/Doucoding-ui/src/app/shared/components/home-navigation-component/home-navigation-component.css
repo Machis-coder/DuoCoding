@@ -1,0 +1,22 @@
+.back-container {
+  max-width: 300px;
+  /*min-width: 300px;*/
+  /*margin: 5px; */
+  /*padding: 0px;*/
+  /*border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;*/
+}
+
+.back-container:hover {
+  max-width: 300px;
+  /*margin: 5px;*/
+  /*padding: 1px;
+  border: 1px solid #ccc;
+  border-radius: 8px;*/
+  background-color: lightgray;
+}
+
+h2, p {
+  text-align: left;
+}

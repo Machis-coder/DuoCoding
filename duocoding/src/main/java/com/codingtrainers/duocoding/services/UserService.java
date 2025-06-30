@@ -20,7 +20,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<UserResponseDTO> getAll() {
-        return userRepository.findAllByActiveTrue()
+        return userRepository.findAllByActiveTrueExceptSuper()
                 .stream()
                 .map(UserResponseDTO::new)
                 .collect(Collectors.toList());
@@ -31,19 +31,9 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
         return new UserResponseDTO(user);
     }
-    public void update(UserRequestDTO user) {
-     User finalUser = userRepository.findByIdAndActiveTrue(user.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-     finalUser.setName(user.getName());
-     finalUser.setSurname(user.getSurname());
-     finalUser.setBirthday(user.getBirthday());
-     finalUser.setDni(user.getDni());
-     finalUser.setEmail(user.getEmail());
-     finalUser.setUsername(user.getUsername());
-     String password = user.getPassword();
-     password = HashUtils.sha256(password);
-     finalUser.setPassword(password);
-        userRepository.save(finalUser);
+    public void update(User user) {
+        user.setActive(true);
+        userRepository.save(user);
     }
 
     public Optional<UserResponseDTO> findByUsername(String username) {
@@ -53,13 +43,14 @@ public class UserService {
 
     public void create(User user) {
         String password = user.getPassword();
+        user.setActive(true);
         password = HashUtils.sha256(password);
         user.setPassword(password);
          userRepository.save(user);
     }
 
     public void deleteUser (Long id) {
-        User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("User Not Found"));
+        User user = userRepository.findByIdAndActiveTrue(id).orElseThrow(()-> new RuntimeException("User Not Found"));
         user.setActive(false);
         userRepository.save(user);
     }
@@ -74,5 +65,11 @@ public class UserService {
                 .map(UserResponseDTO::new)
                 .collect(Collectors.toList());
     }
+    public User findUserByUsernameAndPassword(String username, String password) throws Exception {
+        return userRepository.userLogin(username, password).stream().findFirst().orElseThrow(() ->
+                new Exception("User not found by username and password")
+        );
+    }
+
 
 }

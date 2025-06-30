@@ -2,34 +2,38 @@ package com.codingtrainers.duocoding.services;
 
 
 import com.codingtrainers.duocoding.dto.input.TestRequestDTO;
+import com.codingtrainers.duocoding.dto.output.ExamStructureResponseDTO;
 import com.codingtrainers.duocoding.dto.output.QuestionResponseDTO;
 import com.codingtrainers.duocoding.dto.output.TestResponseDTO;
-import com.codingtrainers.duocoding.entities.Question;
-import com.codingtrainers.duocoding.entities.Subject;
-import com.codingtrainers.duocoding.entities.Test;
+import com.codingtrainers.duocoding.entities.*;
 
-import com.codingtrainers.duocoding.entities.TestQuestion;
+import com.codingtrainers.duocoding.repositories.ResponseRepository;
 import com.codingtrainers.duocoding.repositories.SubjectRepository;
 import com.codingtrainers.duocoding.repositories.TestQuestionRepository;
 import com.codingtrainers.duocoding.repositories.TestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 @Service
 public class TestService {
 
-    @Autowired
-    private TestRepository testRepository;
+    private final TestRepository testRepository;
+    private final SubjectRepository subjectRepository;
+    private final TestQuestionRepository testQuestionRepository;
+    private final ResponseRepository responseRepository;
 
-    @Autowired
-    private SubjectRepository subjectRepository;
-
-    @Autowired
-    private TestQuestionRepository testQuestionRepository;
+    public TestService(TestRepository testRepository,
+                       SubjectRepository subjectRepository,
+                       TestQuestionRepository testQuestionRepository,
+                       ResponseRepository responseRepository) {
+        this.testRepository = testRepository;
+        this.subjectRepository = subjectRepository;
+        this.testQuestionRepository = testQuestionRepository;
+        this.responseRepository = responseRepository;
+    }
 
     public List<TestResponseDTO> getAllTestDTOs() {
         List<Test> tests = testRepository.findAll();
@@ -75,14 +79,13 @@ public class TestService {
             dto.setAnswer(q.getAnswer());
             dto.setType(q.getType());
             dto.setDescription(q.getDescription());
-            dto.setResponses(null);
+            dto.setResponses(null); // Puedes adaptarlo si necesitas respuestas
 
             questions.add(dto);
         }
 
         return questions;
     }
-
 
     public TestResponseDTO createTest(TestRequestDTO dto) {
         Test test = new Test();
@@ -136,35 +139,33 @@ public class TestService {
     public void deleteTestById(Long id) {
         Test test = testRepository.findActiveById(id)
                 .orElseThrow(() -> new RuntimeException("Test not found with id: " + id));
-        test.setActive(false);
+        test.setActive(false); // borrado lógico
         testRepository.save(test);
     }
+
     public void activateTestById(Long id) {
         Test test = testRepository.findFalseById(id)
                 .orElseThrow(() -> new RuntimeException("Test not found with id: " + id));
         test.setActive(true);
         testRepository.save(test);
     }
-}
 
-
-   /* public TestExecutionFullDTO getExamStructure(Long testId) {
-
+    public ExamStructureResponseDTO getExamStructure(Long testId) {
         Optional<Test> optionalTest = testRepository.findById(testId);
         if (optionalTest.isEmpty()) {
             return null;
         }
 
         Test test = optionalTest.get();
-        TestExecutionFullDTO dto = new TestExecutionFullDTO();
+        ExamStructureResponseDTO dto = new ExamStructureResponseDTO();
         dto.setTestId(test.getId());
         dto.setTestTitle(test.getName());
 
         List<TestQuestion> testQuestions = testQuestionRepository.findByTestId(testId);
 
         dto.setQuestions(testQuestions.stream().map(tq -> {
-            com.codingtrainers.duocoding.entities.Question question = tq.getQuestion();
-            TestExecutionFullDTO.QuestionDTO questionDTO = new TestExecutionFullDTO.QuestionDTO();
+            Question question = tq.getQuestion();
+            ExamStructureResponseDTO.QuestionDTO questionDTO = new ExamStructureResponseDTO.QuestionDTO();
             questionDTO.questionId = question.getId();
             questionDTO.content = question.getDescription();
 
@@ -176,24 +177,23 @@ public class TestService {
                         correctAnswerIds.add(Long.parseLong(part.trim()));
                     }
                 }
-            } catch (NumberFormatException e) {
-
-            }
+            } catch (NumberFormatException ignored) {}
 
             List<Response> responses = responseRepository.findByQuestionId(question.getId());
             questionDTO.responses = responses.stream().map(r -> {
-                TestExecutionFullDTO.ResponseDTO responseDTO = new TestExecutionFullDTO.ResponseDTO();
+                ExamStructureResponseDTO.ResponseDTO responseDTO = new ExamStructureResponseDTO.ResponseDTO();
                 responseDTO.responseId = r.getId();
                 responseDTO.content = r.getDescription();
                 responseDTO.setCorrect(correctAnswerIds.contains(r.getId()));
-                            return responseDTO;
+                return responseDTO;
             }).toList();
 
             return questionDTO;
         }).toList());
 
         return dto;
-    }*/
+    }
+}
 
     
 

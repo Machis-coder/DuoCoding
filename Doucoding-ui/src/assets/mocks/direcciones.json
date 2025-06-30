@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "nombreCalle": "Calle Falsa",
+    "numeroCalle": 123,
+    "usuario": {
+      "id": 1,
+      "nickUsuario": "juan",
+      "contrasena": "1234",
+      "fechaHoraCreacion": "2025-05-14T20:06:17",
+      "genero": {
+        "id": 1,
+        "nombre": "masculino"
+      },
+      "nombre": "Juan Antonio",
+      "primerApellido": "Pérez",
+      "segundoApellido": null,
+      "fechaNacimiento": "1990-06-15",
+      "horaDesayuno": "08:00:00",
+      "puestoTrabajo": {
+        "id": 1,
+        "nombre": "Desarrollador"
+      },
+      "admin": true
+    },
+    "direccionPrincipal": false
+  },
+  {
+    "id": 2,
+    "nombreCalle": "Calle Falsa",
+    "numeroCalle": 123,
+    "usuario": {
+      "id": 1,
+      "nickUsuario": "juan",
+      "contrasena": "1234",
+      "fechaHoraCreacion": "2025-05-14T20:06:17",
+      "genero": {
+        "id": 1,
+        "nombre": "masculino"
+      },
+      "nombre": "Juan Antonio",
+      "primerApellido": "Pérez",
+      "segundoApellido": null,
+      "fechaNacimiento": "1990-06-15",
+      "horaDesayuno": "08:00:00",
+      "puestoTrabajo": {
+        "id": 1,
+        "nombre": "Desarrollador"
+      },
+      "admin": true
+    },
+    "direccionPrincipal": false
+  },
+  {
+    "id": 5,
+    "nombreCalle": "Calle Falsa",
+    "numeroCalle": 123,
+    "usuario": {
+      "id": 1,
+      "nickUsuario": "juan",
+      "contrasena": "1234",
+      "fechaHoraCreacion": "2025-05-14T20:06:17",
+      "genero": {
+        "id": 1,
+        "nombre": "masculino"
+      },
+      "nombre": "Juan Antonio",
+      "primerApellido": "Pérez",
+      "segundoApellido": null,
+      "fechaNacimiento": "1990-06-15",
+      "horaDesayuno": "08:00:00",
+      "puestoTrabajo": {
+        "id": 1,
+        "nombre": "Desarrollador"
+      },
+      "admin": true
+    },
+    "direccionPrincipal": true
+  }
+]

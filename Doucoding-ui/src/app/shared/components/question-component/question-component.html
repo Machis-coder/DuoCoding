@@ -1,0 +1,19 @@
+<div class="question-container">
+    <section>
+    <!--select [value]="type" onchange="onTypeChange()" >
+        <option *ngFor="let optionType of types" value="optionType">{{optionType}}</option>
+    </select-->   
+    </section>
+    <section>
+        <input type="text" [value]="description" />    
+    </section>
+    <!--section>
+        <div *ngFor="let response in responses" >
+            <app-response [text]="response.text" [orden]="reponse.order" (click)="saveResponse()"/>
+        </div>
+    </section-->
+
+    <section id="answer">
+        <input type="text" [value]="answer"/>
+    </section>
+</div>

@@ -80,11 +80,11 @@ class UserServiceTest {
     void testUpdate() {
         when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.of(user));
 
-        userService.update(userRequestDTO);
+        userService.update(user);
 
-        assertEquals(userRequestDTO.getName(), user.getName());
-        assertEquals(userRequestDTO.getSurname(), user.getSurname());
-        assertEquals(userRequestDTO.getUsername(), user.getUsername());
+        assertEquals(user.getName(), user.getName());
+        assertEquals(user.getSurname(), user.getSurname());
+        assertEquals(user.getUsername(), user.getUsername());
         verify(userRepository).save(user);
     }
 

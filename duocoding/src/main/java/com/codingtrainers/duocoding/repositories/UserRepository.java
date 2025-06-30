@@ -9,10 +9,10 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    @Query("SELECT u FROM User u WHERE u.active = true and u.role != 'SUPER'")
+    List<User> findAllByActiveTrueExceptSuper();
+    @Query("SELECT u FROM User u WHERE u.active = false and u.role != 'SUPER'")
     List<User> findAllByActiveFalse();
-
-    List<User> findAllByActiveTrue();
 
     User save(User user);
 
@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByActiveTrueAndUsernameOrEmail(String username, String email);
 
-    @Query("SELECT u FROM User u WHERE u.name = :username AND u.password = :hashedPassword AND u.active = true")
-    List<User> userLogin(@Param("username") String username, @Param("hashedPassword") String hashedPassword);
+    @Query("SELECT u FROM User u WHERE u.username = :username AND u.password = SHA2(:password, 256) AND u.active = true ")
+    List<User> userLogin(@Param("username") String username, @Param("password") String password);
 
 }

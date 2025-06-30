@@ -1,0 +1,38 @@
+<div class="user-container">
+    <h2>Edición de Usuario</h2>
+    <div class="form-group">
+        <input [(ngModel)]="name" type="text" placeholder="Name" style="width: 25%;" />        
+    </div>
+    <div class="form-group">
+        <input [(ngModel)]="surname" type="text" placeholder="Surname" /><br/>
+    </div>
+    <div class="form-group">
+        <input [(ngModel)]="dni" type="text" placeholder="DNI" style="width: 25%;" />
+    </div>
+    <div class="form-group" >
+        <input [(ngModel)]="birthdate" type="date" format="dd/mm/yyyy" placeholder="Birth Date" style="width: 25%;" /><br/>
+    </div>
+    <div class="form-group">
+        <input [(ngModel)]="username" type="text" placeholder="UserName" style="width: 25%;" />
+    </div>
+    <div class="form-group">
+        <input [(ngModel)]="password" type="password" placeholder="Password" style="width: 25%;" />
+    </div>
+    <div class="form-group">
+        <input [(ngModel)]="email" type="text" placeholder="email" style="width: 25%;" />
+    </div>
+
+    <div class="form-group" style="width: 25%;">
+        <select [(ngModel)]="role" type="text" placeholder="Role" >
+            <option [value]="'PUPIL'">Alumno</option> 
+            <option [value]="'TEACHER'">Profesor</option>
+            <option [value]="'ADMIN'">Admin</option> 
+        </select>
+    </div>
+    <div class="form-group buttons">
+        <app-button (click)="onSave()" [text]="'Save'"/>
+        <app-button (click)="onBack()" [text]="'Back'"/>
+    </div>
+
+
+</div>
