@@ -2,7 +2,7 @@ package com.codingtrainers.duocoding.controllers;
 
 import com.codingtrainers.duocoding.entities.Question;
 import com.codingtrainers.duocoding.services.QuestionService;
-import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
