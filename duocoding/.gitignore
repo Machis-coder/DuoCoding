@@ -1,16 +1,5 @@
-# Compiled class file
+# === Java build files ===
 *.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
 *.nar
@@ -19,21 +8,33 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# === Java logs and crash reports ===
+*.log
 hs_err_pid*
 replay_pid*
-# Node (Angular)
+
+# === J2ME (Mobile Tools for Java) ===
+.mtj.tmp/
+
+# === Node.js / Angular ===
 node_modules/
 dist/
 npm-debug.log
-.angular/cache/
 .env
+
+# Ignore Angular cache in all subfolders
+**/.angular/cache/
+
+# === IDEs ===
+
 # IntelliJ IDEA
 .idea/
 *.iml
+out/
 target/
+
 # VS Code
 .vscode/
 
-
-out/
+# === BlueJ ===
+*.ctxt
