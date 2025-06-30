@@ -60,4 +60,23 @@ public class Response {
         return question;
     }
 
+    public Integer getResponseOrder() {
+        return responseOrder;
+    }
+
+    public void setResponseOrder(Integer responseOrder) {
+        this.responseOrder = responseOrder;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
