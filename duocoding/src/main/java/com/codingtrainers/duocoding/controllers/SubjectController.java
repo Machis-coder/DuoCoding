@@ -1,8 +1,11 @@
 package com.codingtrainers.duocoding.controllers;
+import com.codingtrainers.duocoding.dto.input.SubjectRequestDTO;
+import com.codingtrainers.duocoding.dto.output.SubjectResponseDTO;
 import com.codingtrainers.duocoding.entities.Subject;
 import com.codingtrainers.duocoding.entities.User;
 import com.codingtrainers.duocoding.services.SubjectService;
 import com.codingtrainers.duocoding.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +23,24 @@ public class SubjectController {
     private SubjectService subjectService;
 
     @GetMapping("/")
-    public List<Subject> getAll() {
-        return subjectService.getAllSubjects();
+    public ResponseEntity<List<SubjectResponseDTO>> getAll() {
+        try {
+            List<SubjectResponseDTO> subjects = subjectService.getAll();
+            if (subjects.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(subjects);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<SubjectResponseDTO> findById(@PathVariable("id") Long id) {
         try {
-            Optional<Subject> subjectOpt = subjectService.getById(id);
-            if (subjectOpt.isPresent()) {
-                return ResponseEntity.ok(subjectOpt.get());
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+            return subjectService.getById(id)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -40,18 +48,78 @@ public class SubjectController {
         }
     }
 
-    @PostMapping("/")
-    public void create(@RequestBody Subject subject) {
-        subjectService.createSubject(subject);
+    @GetMapping("/name/{name}")
+    public ResponseEntity<SubjectResponseDTO> findByName(@PathVariable String name) {
+        try {
+            return subjectService.findByName(name)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @PutMapping("/")
-    public void update(@RequestBody Subject subject) {
-        subjectService.updateSubject(subject);
+    @PostMapping("/")
+    public ResponseEntity<Void> create(@RequestBody SubjectRequestDTO dto) {
+        try{
+            subjectService.createSubject(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody SubjectRequestDTO dto) {
+        try {
+            subjectService.updateSubject(id, dto);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping("/{id}/delete")
-    public void delete(@PathVariable Long id) {
-        subjectService.deleteTestSubject(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        try {
+            subjectService.deleteSubject(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/{id}/activate")
+    public ResponseEntity<Void> activate(@PathVariable Long id) {
+        try {
+            subjectService.activateSubject(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<List<SubjectResponseDTO>> getInactiveSubjects() {
+        try {
+            List<SubjectResponseDTO> subjects = subjectService.getInactiveSubjects();
+            if (subjects.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(subjects);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
 
